@@ -1,0 +1,86 @@
+$status-to-read:  #ffd166;
+$status-reading:  #4f9dff;
+$status-read:     #9ae69a;
+$status-favorite: #e03a3a;
+
+.book-details-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem 1.5rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+
+  img {
+    float: left;
+    margin-right: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+  }
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+    font-weight: 700;
+    font-size: 1.8rem;
+  }
+
+  small {
+    display: block;
+    margin-bottom: 1rem;
+    color: #666;
+    font-style: italic;
+  }
+
+  p {
+    clear: both;
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+  }
+
+  button {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.45rem 1.2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: #4c6bff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+
+    &:hover {
+      background-color: #3753d1;
+    }
+  }
+
+  a {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: #4c6bff;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.25s ease;
+
+    &:hover {
+      border-color: #4c6bff;
+    }
+  }
+
+  .summary {
+    padding: 2rem;
+  }
+
+  .to-read  { color: $status-to-read;  }
+  .reading  { color: $status-reading; }
+  .read     { color: $status-read;    }
+  .favorite { color: $status-favorite; }
+}

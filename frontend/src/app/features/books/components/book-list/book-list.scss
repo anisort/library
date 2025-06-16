@@ -1,0 +1,75 @@
+.book-list-container {
+  --gap: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--gap) 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.header-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  margin-bottom: var(--gap);
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: .5px;
+}
+
+.add-btn {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5rem;
+  background: linear-gradient(135deg, #4f9dff, #4c6bff);
+  color: #fff;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+}
+
+app-selector {
+  width: 100%;
+  margin-bottom: var(--gap);
+}
+
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--gap);
+  width: 100%;
+}
+
+.no-books-message {
+  width: 100%;
+  padding: 2rem;
+  text-align: center;
+  background: #fdfdfd;
+  border: 2px dashed #d4d4d4;
+  border-radius: 1rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+app-paginator {
+  margin-top: var(--gap);
+  align-self: center;
+}

@@ -1,0 +1,36 @@
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  text-align: center;
+  color: #444;
+  padding: 1rem;
+
+  h1 {
+    font-size: 8rem;
+    margin: 0;
+    font-weight: 900;
+    color: #458ac6;
+  }
+
+  p {
+    font-size: 1.5rem;
+    margin: 1rem 0 2rem;
+  }
+
+  .btn-back {
+    padding: 0.6rem 1.5rem;
+    background-color: #2980b9;
+    color: white;
+    font-weight: 600;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #1c5980;
+    }
+  }
+}

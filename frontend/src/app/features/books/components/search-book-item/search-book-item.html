@@ -1,0 +1,12 @@
+<div class="book-item-container" (click)="openBookDetails()">
+  <img
+    [ngSrc]="book.coverLink"
+    [alt]="book.title"
+    width="100"
+    height="150"
+    priority />
+  <div class="overlay">
+    <h4>{{ book.title }}</h4>
+    <small>Author: {{ book.author }}</small>
+  </div>
+</div>

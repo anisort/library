@@ -1,0 +1,45 @@
+.book-item-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  cursor: pointer;
+  max-width: 300px;
+  margin: 1rem;
+
+  img {
+    flex-shrink: 0;
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  .overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h4 {
+      margin: 0 0 0.2rem 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #222;
+      line-height: 1.2;
+      max-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    small {
+      color: #666;
+      font-size: 0.85rem;
+      line-height: 1.1;
+      max-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}

@@ -1,0 +1,27 @@
+<div class="modal-container">
+  <h3>Book status</h3>
+  <form>
+    @for (status of statuses; track status) {
+      <label>
+        <input
+          type="radio"
+          name="bookStatus"
+          class="status"
+          [value]="status"
+          [(ngModel)]="selectedStatus"
+          (change)="onStatusChange()"
+        />
+        {{ formatStatus(status) }}
+      </label>
+    }
+
+    <div class="modal-btns">
+      @if (showConfirmButton) {
+        <button type="button" class="confirm-btn" (click)="onConfirm()">Confirm</button>
+      }
+      @if (isBookInLibrary) {
+        <button type="button" class="remove-btn" (click)="onRemove()">Remove from the library</button>
+      }
+    </div>
+  </form>
+</div>

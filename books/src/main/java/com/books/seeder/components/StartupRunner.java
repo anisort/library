@@ -1,0 +1,29 @@
+package com.books.seeder.components;
+
+import com.books.repositories.BooksRepository;
+import com.books.seeder.services.BooksImportService;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+@Component
+public class StartupRunner implements CommandLineRunner {
+
+    private final BooksImportService booksImportService;
+    private final BooksRepository booksRepository;
+
+    public StartupRunner(BooksImportService booksImportService, BooksRepository booksRepository) {
+        this.booksImportService = booksImportService;
+        this.booksRepository = booksRepository;
+    }
+
+    @Override
+    public void run(String... args) {
+        if (booksRepository.count() == 0) {
+            booksImportService.importBooks();
+            System.out.println("Books imported.");
+        } else {
+            System.out.println("Books already exist. Skipping import.");
+        }
+    }
+}
+

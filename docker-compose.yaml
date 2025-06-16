@@ -1,0 +1,69 @@
+services:
+  auth:
+    build:
+      context: .
+      dockerfile: dockerfiles/auth.Dockerfile
+    container_name: auth-app
+    depends_on:
+      - pg
+    environment:
+      - SPRING_DATASOURCE_URL=$DATASOURCE_URL
+      - SPRING_DATASOURCE_USERNAME=$DB_USER
+      - SPRING_DATASOURCE_PASSWORD=$DB_PASSWORD
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=$SPRING_JPA_HIBERNATE_DDL_AUTO
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=$SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+
+    ports:
+      - "8080:8080"
+
+  books:
+    build:
+      context: .
+      dockerfile: dockerfiles/books.Dockerfile
+    container_name: books-app
+    depends_on:
+      - pg
+      - auth
+    environment:
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=$ISSUER_URI
+      - SPRING_DATASOURCE_URL=$DATASOURCE_URL
+      - SPRING_DATASOURCE_USERNAME=$DB_USER
+      - SPRING_DATASOURCE_PASSWORD=$DB_PASSWORD
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=$SPRING_JPA_HIBERNATE_DDL_AUTO
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=$SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+
+    ports:
+      - "9090:9090"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: dockerfiles/angular.Dockerfile
+    container_name: angular-app
+    depends_on:
+      - pg
+      - auth
+      - books
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: [ "npm", "run", "start", "--", "--host", "0.0.0.0" ]
+
+  pg:
+    image: postgres
+    container_name: libdb
+    environment:
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+      - POSTGRES_DB=$DB_DATABASE
+    ports:
+      - "5435:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+volumes:
+  pg-data:

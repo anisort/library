@@ -1,0 +1,66 @@
+<div class="user-profile-container">
+  @if (isLoading){
+    <app-loader></app-loader>
+  } @else {
+    <div class="avatar-wrapper" #avatarsContainer>
+      <img
+        [ngSrc]="user?.avatar || fallback"
+        width="300"
+        height="300"
+        alt="avatar"
+        class="avatar"
+      />
+      <div
+        class="overlay"
+        (click)="toggleAvatars()"
+      ><mat-icon>edit</mat-icon></div>
+      @if (isAvatarsOpen) {
+        <div class="avatar-popup">
+          <div class="avatars-grid">
+            @for (avatar of userAvatars; track avatar) {
+              <img
+                [ngSrc]="avatar || fallback"
+                width="100"
+                height="100"
+                alt="avatar"
+                class="mini-avatar"
+                [class.selected]="selectedAvatar === avatar"
+                (click)="selectAvatar(avatar)"
+              />
+            }
+          </div>
+          <button
+            class="confirm-button"
+            [class.active]="selectedAvatar"
+            (click)="onUpdateAvatar()"
+          >
+            Confirm
+          </button>
+        </div>
+      }
+    </div>
+    @if (!isUsernameEdit){
+      <h3>{{ user?.username }} <mat-icon (click)="toggleUsername()">edit</mat-icon></h3>
+    } @else {
+      <input
+        type="text"
+        [formControl]="usernameControl"
+        [class.invalid]="usernameControl.invalid && usernameControl.touched"
+      />
+      @if (usernameControl.hasError('required') && usernameControl.touched) {
+        <small class="error">Username is required.</small>
+      }
+      @if (usernameControl.hasError('minlength') && usernameControl.touched) {
+        <small class="error">Username cannot be less than 3 characters.</small>
+      }
+      @if (usernameControl.hasError('usernameOrEmailTaken') && usernameControl.touched && !isUsernameChanged) {
+        <small class="error">Username is already taken.</small>
+      }
+      <div>
+        <button (click)="onUpdateUsername()" [disabled]="usernameControl.invalid || !isUsernameChanged">Confirm</button>
+        <button (click)="toggleUsername()">Cancel</button>
+      </div>
+    }
+    <p>{{ user?.email }}</p>
+  }
+</div>

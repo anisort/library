@@ -1,0 +1,26 @@
+<div class="book-details-container">
+  @if (isLoading) {
+    <app-loader></app-loader>
+  } @else {
+    <img
+      [ngSrc]="book.coverLink"
+      [alt]="book.title"
+      width="200"
+      height="300"
+      priority />
+    <h4>{{ book.title }}</h4>
+    <small>Author: {{ book.author }} <br></small>
+    @if (isAuthenticated) {
+      <p></p>
+      @if (bookStatus) {
+        <p [ngClass]="getStatusClasses()">{{ formatStatus() }}</p>
+      }
+      <button (click)="openStatusModal()">
+       {{ bookStatus ? 'Manage status' : 'Add to library' }}
+      </button>
+    }
+    <p class="summary">{{book.summary}}</p>
+    <a [href]="book.link">Read book</a>
+  }
+</div>
+

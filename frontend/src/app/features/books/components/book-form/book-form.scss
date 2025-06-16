@@ -1,0 +1,99 @@
+.book-form-container {
+  max-width: 800px;
+  margin: 1.5rem auto;
+  padding: 1.5rem 2rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.book-form-container h3 {
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  font-size: 1.8rem;
+  text-align: center;
+  color: #222;
+}
+
+.book-form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.book-form-container label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.book-form-container input[type="text"],
+.book-form-container input[type="file"],
+.book-form-container textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.25s ease;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.book-form-container input[type="text"]:focus,
+.book-form-container textarea:focus,
+.book-form-container input[type="file"]:focus {
+  outline: none;
+  border-color: #4c6bff;
+  box-shadow: 0 0 6px rgba(76, 107, 255, 0.4);
+}
+
+.book-form-container textarea {
+  min-height: 100px;
+}
+
+.book-form-container .field {
+  display: flex;
+  flex-direction: column;
+}
+
+.book-form-container .error {
+  color: #d93025;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  font-weight: 600;
+}
+
+.book-form-container img#preview {
+  display: block;
+  margin: 0.5rem auto 1rem auto;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  max-width: 100%;
+  height: auto;
+}
+
+.book-form-container button[type="submit"] {
+  padding: 0.6rem 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background-color: #4c6bff;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center;
+  width: 150px;
+}
+
+.book-form-container button[type="submit"]:disabled {
+  background-color: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.book-form-container button[type="submit"]:not(:disabled):hover {
+  background-color: #3a50d7;
+}

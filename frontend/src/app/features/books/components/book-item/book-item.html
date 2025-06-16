@@ -1,0 +1,25 @@
+<div class="book-item-container" tabindex="0">
+  <img
+    class="cover"
+    [ngSrc]="book.coverLink"
+    [alt]="book.title"
+    width="200"
+    height="300"
+    priority />
+  <div class="overlay">
+    <div class="info">
+      <h4>{{ book.title }}</h4>
+      <small>Author: {{ book.author }}</small>
+      @if (bookStatus) {
+        <p [ngClass]="getStatusClasses()">{{ formatStatus() }}</p>
+      }
+    </div>
+    <div class="action-btns">
+      <button class="read-btn"  (click)="openBookDetails()">Read</button>
+      @if (authService.role === 'ADMIN') {
+        <button class="update-btn" (click)="onUpdate()">Edit</button>
+        <button class="delete-btn" (click)="onDelete()">Delete</button>
+      }
+    </div>
+  </div>
+</div>

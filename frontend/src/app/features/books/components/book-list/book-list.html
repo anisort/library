@@ -1,0 +1,36 @@
+<div class="book-list-container">
+  <div class="header-row">
+    <h2>Catalog</h2>
+    @if (authService.role === "ADMIN") {
+      <button class="add-btn" (click)="onAdd()">Add new book</button>
+    }
+  </div>
+  @if (isLoading) {
+    <app-loader></app-loader>
+  } @else {
+    <app-selector
+      [options]="alphabet"
+      [selected]="letter"
+      (selectedChange)="onLetterChange($event)">
+    </app-selector>
+    @if (books.length > 0) {
+      <div class="book-list">
+        @for (book of books; track book.id) {
+          <app-book-item
+            [book]="book"
+            (bookDeleted)="onBookDeleted($event)">
+          </app-book-item>
+        }
+      </div>
+    } @else {
+      <div class="no-books-message">
+        <p>No books available in the system.</p>
+      </div>
+    }
+    <app-paginator
+      [currentPage]="page"
+      [totalPages]="totalPages"
+      (pageChange)="onPageChange($event)">
+    </app-paginator>
+  }
+</div>

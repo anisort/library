@@ -1,0 +1,25 @@
+<div class="avatar-wrapper" #menuContainer>
+  <img
+    [ngSrc]="user?.avatar || fallback"
+    width="50"
+    height="50"
+    alt="avatar"
+    class="mini-avatar"
+    (click)="toggle()"
+  />
+  @if (isOpen) {
+    <div class="menu-header" >
+      <img
+        [ngSrc]="user?.avatar || fallback"
+        width="96"
+        height="96"
+        alt="avatar large"
+      />
+      <span class="username">{{ user?.username }}</span>
+      <a routerLink="/profile">Profile</a>
+      <a routerLink="/my-library">My Library</a>
+      <hr />
+      <button (click)="logout()">Log out</button>
+    </div>
+  }
+</div>

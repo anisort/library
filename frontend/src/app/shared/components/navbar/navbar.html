@@ -1,0 +1,29 @@
+<nav class="navbar">
+  <div class="navbar-left">
+    <div class="name">
+      <a routerLink="/home" class="service-name">Library</a>
+    </div>
+
+    <div class="nav-links">
+      <a routerLink="/home">Home</a>
+      <a routerLink="/catalog">Catalog</a>
+      <a routerLink="/my-library">My Library</a>
+    </div>
+  </div>
+  <div class="navbar-right">
+    <app-search-books></app-search-books>
+    @if (isAuthenticated()) {
+      <span class="username">{{ user?.username }}</span>
+      <app-user-menu
+        [user]="user"
+      ></app-user-menu>
+    } @else {
+      <button (click)="onLogin()" class="btn login-btn">Login</button>
+      <button routerLink="/register" class="btn register-btn">Register</button>
+    }
+  </div>
+</nav>
+
+
+
+

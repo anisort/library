@@ -1,0 +1,28 @@
+<div class="top-list-container">
+  <div class="banner">
+    <div class="banner-text">
+      <h1>Escape Into the World of Stories</h1>
+      <p>Discover top-rated books, handpicked for every kind of reader.</p>
+    </div>
+  </div>
+  <h2 class="top-heading">Top Books</h2>
+  @if (isLoading) {
+    <app-loader></app-loader>
+  } @else {
+    @if (topBooks.length > 0) {
+      <div class="top-books-list">
+        @for (book of topBooks; track book.id) {
+          <app-book-item
+            [book]="book"
+            (bookDeleted)="onBookDeleted($event)">
+          </app-book-item>
+        }
+      </div>
+    } @else {
+      <div class="no-books-message">
+        <p>No books available in the system.</p>
+      </div>
+    }
+  }
+</div>
+

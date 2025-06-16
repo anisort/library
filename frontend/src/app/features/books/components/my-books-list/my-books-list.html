@@ -1,0 +1,32 @@
+<div class="my-book-list-container">
+  <h2>My library</h2>
+  @if (isLoading) {
+    <app-loader></app-loader>
+  } @else {
+    <app-selector
+      [options]="statuses"
+      [selected]="bookStatus"
+      (selectedChange)="onStatusChange($event)">
+    </app-selector>
+    @if (myBooks.length > 0) {
+      <div class="my-book-list">
+        @for (book of myBooks; track book.bookItem.id) {
+          <app-book-item
+            [book]="book.bookItem"
+            [bookStatus]="book.bookStatus"
+            (bookDeleted)="onBookDeleted($event)">
+          </app-book-item>
+        }
+      </div>
+    } @else {
+      <div class="no-books-message">
+        <p>No books available in the your library.</p>
+      </div>
+    }
+    <app-paginator
+      [currentPage]="page"
+      [totalPages]="totalPages"
+      (pageChange)="onPageChange($event)">
+    </app-paginator>
+  }
+</div>

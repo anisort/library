@@ -1,0 +1,33 @@
+<div class="search-books-container" #searchContainer>
+  <input
+    type="text"
+    [(ngModel)]="searchText"
+    placeholder="Search books..."
+    class="search-input"
+    (input)="onSearchChange()"
+    (focus)="onSearchFocus()" />
+  @if (isLoading) {
+    <app-loader></app-loader>
+  }
+  @if (isSearchFocused && !isLoading) {
+    <div class="search-container">
+      <app-selector
+        [options]="filters"
+        [selected]="filter"
+        (selectedChange)="onFilterChange($event)">
+      </app-selector>
+      @if (searchBooks.length > 0) {
+        <div class="my-book-list">
+          @for (book of searchBooks; track book.id) {
+            <app-search-book-item [book]="book"></app-search-book-item>
+          }
+        </div>
+      } @else {
+        <div class="no-books-message">
+          <p>No search results found.</p>
+        </div>
+      }
+    </div>
+  }
+</div>
+

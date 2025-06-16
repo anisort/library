@@ -1,0 +1,10 @@
+<div class="selector">
+  @for (option of options; track option) {
+    <button
+      (click)="onSelect(option.value)"
+      [class.active]="option.value === selected"
+    >
+      {{ option.label }}
+    </button>
+  }
+</div>
