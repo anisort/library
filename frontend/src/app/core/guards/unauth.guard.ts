@@ -9,13 +9,13 @@ import { AuthService } from '../services/auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class UnauthGuard implements CanMatch {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   canMatch(
     _route: Route,
     _segments: UrlSegment[]
   ): boolean | UrlTree {
-    return this.auth.isAuthenticated()
+    return this.authService.isAuthenticated()
       ? this.router.createUrlTree(['/home'])
       : true;
   }
