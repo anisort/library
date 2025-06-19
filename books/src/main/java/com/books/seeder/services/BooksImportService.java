@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class BooksImportService {
+public class BooksImportService implements IBookImportService{
 
     private final RestTemplate restTemplate;
     private final BooksRepository booksRepository;
@@ -23,6 +23,7 @@ public class BooksImportService {
         this.booksRepository = booksRepository;
     }
 
+    @Override
     public void importBooks() {
         String url = "https://gutendex.com/books/";
         int pagesProcessed = 0;
@@ -60,8 +61,6 @@ public class BooksImportService {
             pagesProcessed++;
         }
     }
-
-
 
 }
 
