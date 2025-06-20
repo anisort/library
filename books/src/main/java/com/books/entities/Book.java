@@ -33,6 +33,15 @@ public class Book {
         this.link = link;
     }
 
+    public Book(Long id, String title, String author, String summary, String link, String coverLink) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.summary = summary;
+        this.link = link;
+        this.coverLink = coverLink;
+    }
+
     public Long getId() {
         return id;
     }
