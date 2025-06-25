@@ -28,11 +28,14 @@ public class BookFilterTest {
         driver.manage().window().maximize();
 
         Login.login(driver);
-        driver.get("http://localhost:4200/my-library");
     }
 
     @Test
     public void testFilterStatusesSequentially() {
+
+        WebElement navigateLink = driver.findElement(By.xpath("//a[contains(text(),'My Library')]"));
+        navigateLink.click();
+        wait.until(ExpectedConditions.urlContains("http://localhost:4200/my-library"));
 
         Map<String, String> filterToStatus = new HashMap<>();
         filterToStatus.put("To read", "to-read");
