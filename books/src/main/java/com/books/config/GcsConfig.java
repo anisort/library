@@ -15,7 +15,7 @@ public class GcsConfig {
     @Bean
     public Storage storage() throws IOException {
         try (InputStream credentialsStream = getClass().getClassLoader()
-                .getResourceAsStream("gcp/libproject-462709-5bb0c6f6bf50.json")) {
+                .getResourceAsStream("gcp/credentials.json")) {
 
             if (credentialsStream == null) {
                 throw new IllegalArgumentException("Credential file not found in classpath");

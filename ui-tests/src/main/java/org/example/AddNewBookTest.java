@@ -1,3 +1,5 @@
+package org.example;
+
 import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -25,18 +27,7 @@ public class AddNewBookTest {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.manage().window().maximize();
 
-        driver.get("http://localhost:4200/home");
-        WebElement navigateButton = driver.findElement(By.xpath("//button[contains(text(),'Login')]"));
-        navigateButton.click();
-        wait.until(ExpectedConditions.urlContains("http://auth:8080/login"));
-
-        WebElement usernameField = driver.findElement(By.id("username"));
-        WebElement passwordField = driver.findElement(By.id("password"));
-        WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(),'Sign in')]"));
-        usernameField.sendKeys("admin");
-        passwordField.sendKeys("Test100#");
-        loginButton.click();
-        wait.until(ExpectedConditions.urlContains("http://localhost:4200/home"));
+        Login.login(driver);
     }
 
     @Test
