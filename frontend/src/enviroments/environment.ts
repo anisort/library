@@ -1,8 +1,8 @@
 export const environment = {
   production: false,
-  apiUrlAuth: 'http://localhost:8080/api',
-  apiUrlBooks: 'http://localhost:9090/api',
+  apiUrlAuth: 'http://localhost/auth/api',
+  apiUrlBooks: 'http://localhost/books/api',
   oauthClientId: 'auth-client',
-  oauthIssuer: 'http://auth:8080',
+  oauthIssuer: 'http://localhost/auth',
   oauthSecret: 'secret'
 };
