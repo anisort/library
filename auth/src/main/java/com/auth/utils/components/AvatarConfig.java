@@ -14,7 +14,7 @@ public class AvatarConfig {
             "/avatars/robot.png",
             "/avatars/gamer.png",
             "/avatars/girl.png",
-            "/avatars/boy.png",
+            "/avatars/boy.png"
     );
 
 }
