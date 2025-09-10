@@ -30,7 +30,6 @@ export class BookList implements OnInit {
   sort: string = 'title,asc';
   letter: string = '';
   totalPages: number = 0;
-  // errormessage
   isLoading: boolean = false;
   rawAlphabet: string[] = ['*', ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i))];
 

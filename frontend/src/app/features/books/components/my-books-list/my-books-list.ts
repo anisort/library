@@ -28,7 +28,6 @@ export class MyBooksList implements OnInit {
   sort: string = 'book.title,asc';
   bookStatus: string = '';
   totalPages: number = 0;
-  // errormessage
   isLoading: boolean = false;
   rawStatuses: string[] = ['TO_READ', 'READING', 'READ', 'FAVORITE'];
 

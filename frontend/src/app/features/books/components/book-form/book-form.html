@@ -17,7 +17,7 @@
       <div class="field">
         <label for="file">Cover File:</label>
         <input type="file" id="file" (change)="onFileChange($event)" />
-        @if (isEditMode && bookForm.get('file')?.hasError('required') && bookForm.get('file')?.touched) {
+        @if (isEditMode && bookForm.get('file')?.errors?.['required'] && bookForm.get('file')?.touched) {
           <small class="error">File is required.</small>
         }
       </div>
@@ -25,10 +25,10 @@
       <div class="field">
         <label for="title">Title:</label>
         <input type="text" id="title" formControlName="title" />
-        @if (bookForm.get('title')?.hasError('required') && bookForm.get('title')?.touched) {
+        @if (bookForm.get('title')?.errors?.['required'] && bookForm.get('title')?.touched) {
           <small class="error">Title is required.</small>
         }
-        @if (bookForm.get('title')?.hasError('minlength') && bookForm.get('title')?.touched) {
+        @if (bookForm.get('title')?.errors?.['minlength'] && bookForm.get('title')?.touched) {
           <small class="error">Title must be at least 3 characters.</small>
         }
       </div>
@@ -36,10 +36,10 @@
       <div class="field">
         <label for="author">Author:</label>
         <input type="text" id="author" formControlName="author" />
-        @if (bookForm.get('author')?.hasError('required') && bookForm.get('author')?.touched) {
+        @if (bookForm.get('author')?.errors?.['required'] && bookForm.get('author')?.touched) {
           <small class="error">Author is required.</small>
         }
-        @if (bookForm.get('author')?.hasError('minlength') && bookForm.get('author')?.touched) {
+        @if (bookForm.get('author')?.errors?.['minlength'] && bookForm.get('author')?.touched) {
           <small class="error">Author must be at least 3 characters.</small>
         }
       </div>
@@ -47,10 +47,10 @@
       <div class="field">
         <label for="summary">Summary:</label>
         <textarea id="summary" formControlName="summary"></textarea>
-        @if (bookForm.get('summary')?.hasError('required') && bookForm.get('summary')?.touched) {
+        @if (bookForm.get('summary')?.errors?.['required'] && bookForm.get('summary')?.touched) {
           <small class="error">Summary is required.</small>
         }
-        @if (bookForm.get('summary')?.hasError('minlength') && bookForm.get('summary')?.touched) {
+        @if (bookForm.get('summary')?.errors?.['minlength'] && bookForm.get('summary')?.touched) {
           <small class="error">Summary must be at least 3 characters.</small>
         }
       </div>
@@ -58,7 +58,7 @@
       <div class="field">
         <label for="link">External Link:</label>
         <input type="text" id="link" formControlName="link" />
-        @if (bookForm.get('link')?.hasError('required') && bookForm.get('link')?.touched) {
+        @if (bookForm.get('link')?.errors?.['required'] && bookForm.get('link')?.touched) {
           <small class="error">Link is required.</small>
         }
       </div>
