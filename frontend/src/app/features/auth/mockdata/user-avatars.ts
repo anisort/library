@@ -1,6 +1,8 @@
 export const userAvatars: string[] = [
-  "public/avatars/avatar.png",
-  "public/avatars/man.png",
-  "public/avatars/robot.png",
-  "public/avatars/user.png",
+  "/avatars/girlhat.png",
+  "/avatars/woman.png",
+  "/avatars/robot.png",
+  "/avatars/gamer.png",
+  "/avatars/girl.png",
+  "/avatars/boy.png",
 ]
