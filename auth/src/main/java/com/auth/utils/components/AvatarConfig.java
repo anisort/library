@@ -1,9 +1,11 @@
 package com.auth.utils.components;
 
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
+@Getter
 @Component
 public class AvatarConfig {
     private final Set<String> allowedAvatars = Set.of(
@@ -26,8 +28,5 @@ public class AvatarConfig {
             "https://storage.googleapis.com/user-standart-images-bucket/woman.png"
     );
 
-    public Set<String> getAllowedAvatars() {
-        return allowedAvatars;
-    }
 }
 
