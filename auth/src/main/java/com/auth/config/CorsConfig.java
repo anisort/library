@@ -10,11 +10,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig {
 
-    @Value("${auth.issuer-uri}")
-    private String issuerUri;
+    @Value("${cors.frontend-url-proxy}")
+    private String frontendUrlProxy;
 
-    @Value("${auth.frontend-url}")
-    private String frontendUrl;
+    @Value("${cors.frontend-url-host}")
+    private String frontendUrlHost;
+
+    @Value("${cors.frontend-url-container}")
+    private String frontendUrlContainer;
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -22,7 +25,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins(issuerUri, frontendUrl)
+                        .allowedOrigins(frontendUrlProxy, frontendUrlHost, frontendUrlContainer)
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true);
