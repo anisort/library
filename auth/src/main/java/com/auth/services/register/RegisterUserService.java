@@ -32,7 +32,7 @@ public class RegisterUserService implements IRegisterUserService {
                 registerUserDto.getEmail(),
                 passwordEncoder.encode(registerUserDto.getPassword()),
                 Role.USER,
-                "https://storage.googleapis.com/user-standart-images-bucket/user.png"
+                "/avatars/user.png"
         );
         CustomUserDetails savedUser = userRepository.save(customUserDetails);
         return UsersConverter.convertUserToUserInfoDto(savedUser);

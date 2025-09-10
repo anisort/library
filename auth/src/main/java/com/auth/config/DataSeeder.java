@@ -33,6 +33,9 @@ public class DataSeeder implements ApplicationRunner {
     @Value("${seed.user.password:User123#}")
     private String userPassword;
 
+    @Value("${seed.user.avatar:/avatars/user.png}")
+    private String avatar;
+
     public DataSeeder(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -55,7 +58,7 @@ public class DataSeeder implements ApplicationRunner {
                 email,
                 passwordEncoder.encode(rawPassword),
                 role,
-                "https://storage.googleapis.com/user-standart-images-bucket/user.png"
+                avatar
         );
         userRepository.save(user);
         System.out.println("User " + username + " created");
