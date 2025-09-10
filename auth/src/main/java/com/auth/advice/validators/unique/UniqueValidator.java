@@ -18,7 +18,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
         this.fieldName = unique.fieldName();
         String serviceQualifier = unique.serviceQualifier();
 
-        if (!serviceQualifier.equals("")) {
+        if (!serviceQualifier.isEmpty()) {
             this.service = this.applicationContext.getBean(serviceQualifier, clazz);
         } else {
             this.service = this.applicationContext.getBean(clazz);

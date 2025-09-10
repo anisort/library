@@ -3,7 +3,6 @@ package com.auth.controllers;
 import com.auth.dto.RegisterUserDto;
 import com.auth.dto.UserInfoDto;
 import com.auth.services.register.IRegisterUserService;
-import com.auth.services.register.RegisterUserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
