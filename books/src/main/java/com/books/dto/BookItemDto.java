@@ -1,5 +1,10 @@
 package com.books.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class BookItemDto {
 
     private Long id;
@@ -10,35 +15,4 @@ public class BookItemDto {
 
     private String coverLink;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getCoverLink() {
-        return coverLink;
-    }
-
-    public void setCoverLink(String coverLink) {
-        this.coverLink = coverLink;
-    }
 }
