@@ -32,7 +32,7 @@ export class UserProfile implements OnInit, OnDestroy {
   isAvatarsOpen: boolean = false;
   isUsernameEdit: boolean = false;
   isLoading: boolean = false;
-  readonly fallback: string = 'https://storage.googleapis.com/user-standart-images-bucket/user.png';
+  readonly fallback: string = '/avatars/user.png';
   private destroy$ = new Subject<void>();
   @ViewChild('avatarsContainer') avatarsContainer!: ElementRef;
 

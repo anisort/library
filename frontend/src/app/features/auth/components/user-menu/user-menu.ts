@@ -17,7 +17,7 @@ import {CommonModule, NgOptimizedImage} from '@angular/common';
 export class UserMenu {
 
   @Input() user!: UserInfoModel | null;
-  readonly fallback: string = 'https://storage.googleapis.com/user-standart-images-bucket/user.png';
+  readonly fallback: string = '/avatars/user.png';
   isOpen: boolean = false;
   @ViewChild('menuContainer') menuContainer!: ElementRef;
 
