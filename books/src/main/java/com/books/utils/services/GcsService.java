@@ -17,7 +17,7 @@ public class GcsService implements ICloudService {
     private final String bucketName;
 
     @Autowired
-    public GcsService(Storage storage, @Value("${gcs.bucket.name}") String bucketName) {
+    public GcsService(Storage storage, @Value("${gcp.bucket.name}") String bucketName) {
         this.storage = storage;
         this.bucketName = bucketName;
     }
