@@ -5,9 +5,9 @@
     </div>
 
     <div class="nav-links">
-      <a routerLink="/home">Home</a>
-      <a routerLink="/catalog">Catalog</a>
-      <a routerLink="/my-library">My Library</a>
+      <a id="navigate-home" routerLink="/home">Home</a>
+      <a id="navigate-catalog" routerLink="/catalog">Catalog</a>
+      <a id="navigate-my-library" routerLink="/my-library">My Library</a>
     </div>
   </div>
   <div class="navbar-right">
@@ -18,7 +18,7 @@
         [user]="user"
       ></app-user-menu>
     } @else {
-      <button (click)="onLogin()" class="btn login-btn">Login</button>
+      <button (click)="onLogin()" id="navigate-login-btn" class="btn login-btn">Login</button>
       <button routerLink="/register" class="btn register-btn">Register</button>
     }
   </div>

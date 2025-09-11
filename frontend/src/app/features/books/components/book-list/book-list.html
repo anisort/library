@@ -2,7 +2,7 @@
   <div class="header-row">
     <h2>Catalog</h2>
     @if (authService.role === "ADMIN") {
-      <button class="add-btn" (click)="onAdd()">Add new book</button>
+      <button id="add-new-book-btn" class="add-btn" (click)="onAdd()">Add new book</button>
     }
   </div>
   @if (isLoading) {
