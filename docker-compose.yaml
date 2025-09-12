@@ -86,7 +86,7 @@ services:
       - lib-network
 
   pg-books:
-    image: postgres
+    image: 'pgvector/pgvector:pg16'
     container_name: libdb-books
     environment:
       - POSTGRES_USER=$DB_USER
