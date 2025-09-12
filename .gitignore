@@ -1,3 +1,4 @@
 .env
 books/src/main/resources/gcp/credentials.json
+books/src/main/resources/credentials.json
 .idea/
