@@ -4,6 +4,8 @@ import com.books.entities.Book;
 import com.books.repositories.BooksRepository;
 import com.books.seeder.dto.GutenBookDto;
 import com.books.seeder.dto.GutendexResponseDto;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -11,6 +13,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class BooksImportService implements IBookImportService{
@@ -20,11 +25,13 @@ public class BooksImportService implements IBookImportService{
 
     private final RestTemplate restTemplate;
     private final BooksRepository booksRepository;
+    private final VectorStore vectorStore;
 
     @Autowired
-    public BooksImportService(RestTemplate restTemplate, BooksRepository booksRepository) {
+    public BooksImportService(RestTemplate restTemplate, BooksRepository booksRepository, VectorStore vectorStore) {
         this.restTemplate = restTemplate;
         this.booksRepository = booksRepository;
+        this.vectorStore = vectorStore;
     }
 
     @Override
@@ -43,6 +50,7 @@ public class BooksImportService implements IBookImportService{
             GutendexResponseDto data = response.getBody();
             if (data == null) break;
 
+            List<Document> documents = new ArrayList<>();
             for (GutenBookDto gBook : data.getResults()) {
                 if (gBook.getAuthors().isEmpty() || gBook.getSummaries().isEmpty()) continue;
 
@@ -58,8 +66,20 @@ public class BooksImportService implements IBookImportService{
                 book.setLink(link);
                 book.setCoverLink(coverLink);
 
-                booksRepository.save(book);
+                book = booksRepository.save(book);
+
+                Document document = new org.springframework.ai.document.Document(book.getSummary(), Map.of(
+                        "id", book.getId(),
+                        "title", book.getTitle(),
+                        "author", book.getAuthor(),
+                        "coverLink", book.getCoverLink(),
+                        "link", book.getLink()
+                ));
+
+                documents.add(document);
             }
+
+            vectorStore.add(documents);
 
             url = data.getNext();
             pagesProcessed++;

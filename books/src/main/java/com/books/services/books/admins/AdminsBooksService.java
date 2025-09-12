@@ -7,6 +7,8 @@ import com.books.dto.CreateBookDto;
 import com.books.entities.Book;
 import com.books.repositories.BooksRepository;
 import com.books.utils.services.ICloudService;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -21,11 +25,13 @@ public class AdminsBooksService implements IAdminsBooksService {
 
     private final BooksRepository booksRepository;
     private final ICloudService gcsService;
+    private final PgVectorStore vectorStore;
 
     @Autowired
-    public AdminsBooksService(BooksRepository booksRepository, ICloudService gcsService) {
+    public AdminsBooksService(BooksRepository booksRepository, ICloudService gcsService, PgVectorStore vectorStore) {
         this.booksRepository = booksRepository;
         this.gcsService = gcsService;
+        this.vectorStore = vectorStore;
     }
 
     @Override
@@ -34,6 +40,12 @@ public class AdminsBooksService implements IAdminsBooksService {
         createBookDto.setCoverLink(fileUrl);
         Book book = BooksConverter.convertCreateBookDtoToBook(createBookDto);
         Book savedBook = booksRepository.save(book);
+        Document document = new Document(book.getSummary(), Map.of(
+                "id", book.getId(),
+                "title", book.getTitle(),
+                "author", book.getAuthor()
+        ));
+        vectorStore.add(List.of(document));
         return BooksConverter.convertBookToBookSingleItemDto(savedBook);
     }
 
