@@ -1,4 +1,4 @@
 .env
-books/src/main/resources/gcp/credentials.json
-books/src/main/resources/credentials.json
+books/src/main/resources/gcp/storage/credentials.json
+books/src/main/resources/gcp/embedding/credentials.json
 .idea/
