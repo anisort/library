@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class BooksImportService implements IBookImportService{
@@ -68,7 +69,8 @@ public class BooksImportService implements IBookImportService{
 
                 book = booksRepository.save(book);
 
-                Document document = new org.springframework.ai.document.Document(book.getSummary(), Map.of(
+                UUID uuid = UUID.nameUUIDFromBytes(String.valueOf(book.getId()).getBytes());
+                Document document = new Document(uuid.toString(), book.getSummary(), Map.of(
                         "id", book.getId(),
                         "title", book.getTitle(),
                         "author", book.getAuthor(),
