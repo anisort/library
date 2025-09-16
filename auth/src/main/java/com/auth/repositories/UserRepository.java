@@ -12,4 +12,5 @@ public interface UserRepository extends JpaRepository<CustomUserDetails, Long> {
     Optional<CustomUserDetails> findByEmail(String email);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
+    Optional<CustomUserDetails> findByGoogleSub(String googleSub);
 }

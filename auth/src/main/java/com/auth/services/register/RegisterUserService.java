@@ -30,6 +30,7 @@ public class RegisterUserService implements IRegisterUserService {
         CustomUserDetails customUserDetails = new CustomUserDetails(
                 registerUserDto.getUsername(),
                 registerUserDto.getEmail(),
+                registerUserDto.getName(),
                 passwordEncoder.encode(registerUserDto.getPassword()),
                 Role.USER,
                 "/avatars/user.png"

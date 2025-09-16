@@ -35,17 +35,25 @@ public class CustomUserDetails implements UserDetails, CredentialsContainer {
     @Getter
     private String avatar;
 
+    @Getter
+    private String googleSub;
+
+    @Getter
+    private String name;
+
     public CustomUserDetails() {}
 
     public CustomUserDetails(
             String username,
             String email,
+            String name,
             String password,
             Role role,
             String avatar
     ) {
         this.username = username;
         this.email = email;
+        this.name = name;
         this.password = password;
         this.role = role;
         this.avatar = avatar;

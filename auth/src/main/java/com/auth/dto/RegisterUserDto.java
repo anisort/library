@@ -20,6 +20,10 @@ public class RegisterUserDto {
     @Unique(service = UserExistsValidationService.class, fieldName = "email", message = "email already exists")
     private String email;
 
+    @NotBlank(message = "username is required")
+    @Size(min = 3, message = "min length equals 3")
+    private String name;
+
     @NotBlank(message = "password is required")
     @Pattern(regexp = "(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])(?=.*\\d).{8,}", message = "Password must be at least 8 characters long, contain one letter, one number, and one special character !@#$%^&*")
     private String password;

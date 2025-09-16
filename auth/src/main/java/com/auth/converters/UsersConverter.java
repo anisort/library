@@ -10,6 +10,7 @@ public class UsersConverter {
         userInfoDto.setId(user.getId());
         userInfoDto.setUsername(user.getUsername());
         userInfoDto.setEmail(user.getEmail());
+        userInfoDto.setName(user.getName());
         userInfoDto.setRole(user.getRole());
         userInfoDto.setAvatar(user.getAvatar());
         return userInfoDto;

@@ -33,6 +33,9 @@ public class DataSeeder implements ApplicationRunner {
     @Value("${seed.user.password:User123#}")
     private String userPassword;
 
+    @Value("${seed.user.name:Test}")
+    private String defaultName;
+
     @Value("${seed.user.avatar:/avatars/user.png}")
     private String avatar;
 
@@ -56,6 +59,7 @@ public class DataSeeder implements ApplicationRunner {
         CustomUserDetails user = new CustomUserDetails(
                 username,
                 email,
+                defaultName,
                 passwordEncoder.encode(rawPassword),
                 role,
                 avatar
