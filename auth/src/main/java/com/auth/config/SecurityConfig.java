@@ -6,6 +6,8 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
+import com.auth.repositories.UserRepository;
+import com.auth.utils.enums.Role;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -25,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
@@ -97,6 +100,8 @@ public class SecurityConfig {
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .formLogin(form -> form.loginPage("/login"))
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login"))
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults());
 
@@ -125,15 +130,35 @@ public class SecurityConfig {
     }
 
     @Bean
-    public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
+    public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer(UserRepository userRepository) {
         return context -> {
-            if (context.getPrincipal().getPrincipal() instanceof CustomUserDetails user) {
+            Object principal = context.getPrincipal().getPrincipal();
+            if (principal instanceof CustomUserDetails user) {
                 context.getClaims().subject(String.valueOf(user.getId()));
                 context.getClaims().claim("role", user.getRole().name());
             }
+            else if (principal instanceof DefaultOidcUser user) {
+                CustomUserDetails customUserDetails = userRepository.findByGoogleSub(user.getSubject())
+                        .orElseGet(() -> userRepository.findByEmail(user.getEmail())
+                                .map(existingUser -> {
+                                    existingUser.setGoogleSub(user.getSubject());
+                                    return userRepository.save(existingUser);
+                                })
+                                .orElseGet(() -> {
+                                    CustomUserDetails newUser = new CustomUserDetails();
+                                    newUser.setGoogleSub(user.getSubject());
+                                    newUser.setEmail(user.getEmail());
+                                    newUser.setName(user.getFullName());
+                                    newUser.setAvatar(user.getPicture());
+                                    newUser.setRole(Role.USER);
+                                    return userRepository.save(newUser);
+                                }));
+
+                context.getClaims().subject(String.valueOf(customUserDetails.getId()));
+                context.getClaims().claim("role", customUserDetails.getRole().name());
+            }
         };
     }
-
 
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
