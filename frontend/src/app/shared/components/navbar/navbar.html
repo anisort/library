@@ -13,7 +13,7 @@
   <div class="navbar-right">
     <app-search-books></app-search-books>
     @if (isAuthenticated()) {
-      <span class="username">{{ user?.username }}</span>
+      <span class="name">{{ user?.name }}</span>
       <app-user-menu
         [user]="user"
       ></app-user-menu>
