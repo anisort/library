@@ -1,68 +1,51 @@
 package com.ai.books.assistant.services.assistant.gemini;
 
-import com.ai.books.assistant.dto.AssistantResponseDto;
-import com.ai.books.assistant.entities.AssistantResponse;
-import com.ai.books.assistant.entities.UserPrompt;
-import com.ai.books.assistant.repositories.AssistantResponseRepository;
-import com.ai.books.assistant.repositories.UserPromptRepository;
 import com.ai.books.assistant.services.assistant.IAssistantService;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class GeminiAssistantService implements IAssistantService {
 
     private final VertexAiGeminiChatModel chatModel;
     private final VectorStore vectorStore;
-    private final UserPromptRepository userPromptRepository;
-    private final AssistantResponseRepository assistantResponseRepository;
 
-    public GeminiAssistantService(VertexAiGeminiChatModel chatModel, VectorStore vectorStore, UserPromptRepository userPromptRepository, AssistantResponseRepository assistantResponseRepository) {
+    public GeminiAssistantService(VertexAiGeminiChatModel chatModel, VectorStore vectorStore) {
         this.chatModel = chatModel;
         this.vectorStore = vectorStore;
-        this.userPromptRepository = userPromptRepository;
-        this.assistantResponseRepository = assistantResponseRepository;
     }
 
     @Override
-    public AssistantResponse getAssistantResponse(String prompt, Long userId) {
-        String systemMessage = "You are a helpful assistant";
+    public ChatResponse getAssistantResponse(String prompt) {
+        String systemMessage = """
+        You are a Book Assistant. You can answer questions about books
+        using both the retrieved content and the metadata attached to each book.
+        
+        Rules:
+        - Metadata may include fields such as id, title, author, coverLink, link, url, source, etc.
+        - Use metadata naturally in your answers when relevant.
+        - If the user asks where to read or find a book, extract and return the direct link(s) strictly from metadata fields:
+          link, url, source, readUrl, openUrl (in this order of priority).
+        - If multiple candidates are retrieved, list up to 3: "Title — <link>".
+        - If no metadata contains a link, say briefly: "Sorry, I couldn't find a link for this book in the metadata."
+        - Do not say "based on the context"; just answer directly.
+        - If the question is unrelated to the books or metadata, reply briefly:
+          "Sorry, I can only answer questions about the books."
+        """;
 
-        UserPrompt userPrompt = saveUserPrompt(prompt, userId);
-
-        ChatResponse response = ChatClient.builder(chatModel)
+        return ChatClient.builder(chatModel)
                 .build()
                 .prompt()
                 .advisors(new QuestionAnswerAdvisor(vectorStore))
                 .system(systemMessage)
-                .user(userPrompt.getPrompt())
+                .user(prompt)
                 .call()
                 .chatResponse();
-
-        return saveAssistantResponse(response, userPrompt);
-    }
-
-    private UserPrompt saveUserPrompt(String prompt, Long userId) {
-        UserPrompt userPrompt = new UserPrompt();
-        userPrompt.setPrompt(prompt);
-        userPrompt.setUserId(userId);
-        return userPromptRepository.save(userPrompt);
-    }
-
-    private AssistantResponse saveAssistantResponse(ChatResponse response, UserPrompt userPrompt) {
-        AssistantResponse assistantResponse = new AssistantResponse();
-        assistantResponse.setResponse(Objects.requireNonNull(response).getResult().getOutput().getText());
-        assistantResponse.setPromptTokens(response.getMetadata().getUsage().getPromptTokens());
-        assistantResponse.setCompletionTokens(response.getMetadata().getUsage().getCompletionTokens());
-        assistantResponse.setTotalTokens(response.getMetadata().getUsage().getTotalTokens());
-        assistantResponse.setUserPrompt(userPrompt);
-        return assistantResponseRepository.save(assistantResponse);
     }
 
 }
