@@ -7,10 +7,8 @@ import java.time.Instant;
 
 @Getter
 @Setter
-public class AssistantResponseDto {
-    private String response;
-    private int promptTokens;
-    private int completionTokens;
-    private int totalTokens;
+public class UserPromptDto {
+    private Long id;
+    private String prompt;
     private Instant createdOn;
 }
