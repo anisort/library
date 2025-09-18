@@ -26,5 +26,7 @@ public class UserPrompt {
     @OneToOne(mappedBy = "userPrompt", cascade = CascadeType.ALL, orphanRemoval = true)
     private AssistantResponse assistantResponse;
 
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "chat_id")
+    private Chat chat;
 }
