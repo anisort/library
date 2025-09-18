@@ -21,7 +21,7 @@ public class SpringConfig {
         http
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/assistant/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/chats/**", "/api/messages/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
