@@ -2,26 +2,24 @@ package com.ai.books.assistant.services.assistant.gemini;
 
 import com.ai.books.assistant.services.assistant.IAssistantService;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MimeTypeUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class GeminiAssistantService implements IAssistantService {
 
     private final VertexAiGeminiChatModel chatModel;
     private final VectorStore vectorStore;
-
-    public GeminiAssistantService(VertexAiGeminiChatModel chatModel, VectorStore vectorStore) {
-        this.chatModel = chatModel;
-        this.vectorStore = vectorStore;
-    }
-
-    @Override
-    public ChatResponse getAssistantResponse(String prompt) {
-        String systemMessage = """
+    private final ChatMemory chatMemory;
+    private static final String systemMessage = """
         You are a Book Assistant. You can answer questions about books
         using both the retrieved content and the metadata attached to each book.
         
@@ -37,14 +35,32 @@ public class GeminiAssistantService implements IAssistantService {
           "Sorry, I can only answer questions about the books."
         """;
 
+    public GeminiAssistantService(VertexAiGeminiChatModel chatModel, VectorStore vectorStore, ChatMemory chatMemory) {
+        this.chatModel = chatModel;
+        this.vectorStore = vectorStore;
+        this.chatMemory = chatMemory;
+    }
+
+    @Override
+    public ChatResponse getAssistantResponse(String prompt, Long chatId) {
+
         return ChatClient.builder(chatModel)
+                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
                 .build()
                 .prompt()
                 .advisors(new QuestionAnswerAdvisor(vectorStore))
+                .advisors( a -> a.param(ChatMemory.CONVERSATION_ID, chatId))
                 .system(systemMessage)
                 .user(prompt)
+//                .user(u -> u.text("Explain what do you see on this picture?")
+//                        .media(MimeTypeUtils.IMAGE_PNG, new ClassPathResource("/multimodal.test.png"))) for future implementation
                 .call()
                 .chatResponse();
+    }
+
+    @Override
+    public ChatResponse getAssistantResponseMultimodal(String prompt, Long chatId, MultipartFile file) {
+        return null;
     }
 
 }
