@@ -27,9 +27,9 @@ public class ChatsController {
     }
 
     @PostMapping
-    public ChatDto createChat(@AuthenticationPrincipal Jwt jwt) {
+    public ChatDto createChat(@RequestBody Map<String, String> title, @AuthenticationPrincipal Jwt jwt) {
         Long userId = Long.valueOf(jwt.getSubject());
-        return chatsService.createChat(userId);
+        return chatsService.createChat(userId, title.get("title"));
     }
 
     @PatchMapping("/{chatId}")
