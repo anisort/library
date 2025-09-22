@@ -1,12 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../../core/services/auth/auth.service';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {SearchBooks} from '../../../features/books/components/search-books/search-books';
 import {UserStoreService} from '../../../core/services/userstore/user-store.service';
 import {Subject, takeUntil} from 'rxjs';
 import {UserInfoModel} from '../../../features/auth/models/user-info-model';
 import {UserMenu} from '../../../features/auth/components/user-menu/user-menu';
 import {CommonModule} from '@angular/common';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,8 @@ import {CommonModule} from '@angular/common';
     RouterLink,
     SearchBooks,
     CommonModule,
-    UserMenu
+    UserMenu,
+    MatIcon,
   ],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
@@ -27,7 +29,8 @@ export class Navbar implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private userStore: UserStoreService
+    private userStore: UserStoreService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -47,6 +50,10 @@ export class Navbar implements OnInit, OnDestroy {
 
   onLogin() {
     this.authService.login();
+  }
+
+  openAiAssistant() {
+    void this.router.navigate(['/chats/initial']);
   }
 
 }
