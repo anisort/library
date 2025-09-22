@@ -7,5 +7,4 @@ import java.util.List;
 public interface IMessagesService {
     MessageDto sendMessage(String prompt, Long chatId, Long userId);
     List<MessageDto> getMessages(Long chatId, Long userId);
-    void deleteMessage(Long userPromptId, Long userId);
 }
