@@ -13,6 +13,9 @@
   <div class="navbar-right">
     <app-search-books></app-search-books>
     @if (isAuthenticated()) {
+      <div class="ai-assistant-icon" (click)="openAiAssistant()">
+        <mat-icon>smart_toy</mat-icon>
+      </div>
       <span class="name">{{ user?.name }}</span>
       <app-user-menu
         [user]="user"
