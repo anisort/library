@@ -7,6 +7,7 @@ public class AssistantResponsesConverter {
 
     public static AssistantResponseDto convertAssistantResponseToDto(AssistantResponse assistantResponse) {
         AssistantResponseDto assistantResponseDto = new AssistantResponseDto();
+        assistantResponseDto.setId(assistantResponse.getId());
         assistantResponseDto.setResponse(assistantResponse.getResponse());
         assistantResponseDto.setPromptTokens(assistantResponse.getPromptTokens());
         assistantResponseDto.setCompletionTokens(assistantResponse.getCompletionTokens());
