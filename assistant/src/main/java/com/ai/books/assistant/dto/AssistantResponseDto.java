@@ -8,6 +8,7 @@ import java.time.Instant;
 @Getter
 @Setter
 public class AssistantResponseDto {
+    private Long id;
     private String response;
     private int promptTokens;
     private int completionTokens;
