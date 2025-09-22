@@ -57,6 +57,13 @@ export const routes: Routes = [
     canActivate: [RoleGuard],
     data: { roles: ['ADMIN'] }
   },
+  {
+    path: 'chats',
+    loadChildren: () => import('./features/assistant/routes/chats.routes')
+      .then(m => m.CHATS_ROUTES),
+    canActivate: [RoleGuard],
+    data: { roles: ['ADMIN', 'USER'] }
+  },
 
   {
     path: 'access-denied',
