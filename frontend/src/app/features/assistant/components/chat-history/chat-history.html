@@ -1,0 +1,8 @@
+<div class="chat-history-container">
+  <div class="chat-history">
+    @for (message of messages; track message.userPrompt.id) {
+      <app-message-item [message]="message"></app-message-item>
+    }
+  </div>
+  <app-chat-input [control]="promptControl" (submitPrompt)="onSubmit()"></app-chat-input>
+</div>

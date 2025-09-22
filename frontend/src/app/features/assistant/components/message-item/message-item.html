@@ -1,0 +1,15 @@
+<div class="message-container">
+  <div class="message-bubble user">
+    <p>{{ message.userPrompt.prompt }}</p>
+    <small>{{ message.userPrompt.createdOn | date: 'medium' }}</small>
+  </div>
+  <div class="message-bubble assistant">
+    @if (message.assistantResponse.response === '...') {
+      <p><i>processing...</i></p>
+    } @else {
+      <markdown [data]="message.assistantResponse.response"></markdown>
+      <small>{{ message.assistantResponse.createdOn | date: 'medium' }}</small>
+    }
+  </div>
+</div>
+

@@ -1,0 +1,20 @@
+<li class="chat-item">
+  @if (!isEditing) {
+    <a [routerLink]="[chat.id]" routerLinkActive="active">{{ chat.title }}</a>
+  } @else {
+    <input
+      type="text"
+      [formControl]="titleControl"
+      [class.invalid]="titleControl.invalid && titleControl.touched"
+    />
+    <button type="button" (click)="confirmEdit()">Confirm</button>
+    <button type="button" (click)="cancelEditLocal()">Cancel</button>
+  }
+  <button class="more-btn" (click)="toggleMenu($event)">⋯</button>
+  @if (isOpen) {
+    <div class="menu" (click)="$event.stopPropagation()" #menu>
+      <button (click)="startEditLocal(); menuToggle.emit()">Rename</button>
+      <button (click)="requestDelete(); menuToggle.emit()">Delete</button>
+    </div>
+  }
+</li>

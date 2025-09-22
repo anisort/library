@@ -1,0 +1,30 @@
+<div class="chat-list-container">
+  <h2>AI Assistant</h2>
+  @if (isLoading) {
+    <app-loader></app-loader>
+  } @else {
+    <aside class="sidebar">
+      <div class="header">
+        <h3>Chats</h3>
+        <button type="button" (click)="onNewChat()">+ New chat</button>
+      </div>
+      <ul class="chat-list">
+        @for (chat of chats; track chat.id) {
+          <app-chat-item
+            [chat]="chat"
+            [isOpen]="selectedMenuChatId === chat.id"
+            [isEditing]="editingChatId === chat.id"
+            (menuToggle)="onMenuToggle(chat.id)"
+            (startEdit)="onStartEdit(chat.id)"
+            (cancelEdit)="onCancelEdit()"
+            (rename)="onRename($event)"
+            (remove)="onDelete($event)"
+          ></app-chat-item>
+        }
+      </ul>
+    </aside>
+    <div class="main">
+      <router-outlet></router-outlet>
+    </div>
+  }
+</div>
