@@ -31,10 +31,4 @@ public class MessagesController {
         Long userId = Long.valueOf(jwt.getSubject());
         return messagesService.sendMessage(prompt.get("prompt"), chatId, userId);
     }
-
-    @DeleteMapping("{userPromptId}")
-    public void deleteMessage(@PathVariable Long userPromptId, @AuthenticationPrincipal Jwt jwt) {
-        Long userId = Long.valueOf(jwt.getSubject());
-        messagesService.deleteMessage(userPromptId, userId);
-    }
 }
