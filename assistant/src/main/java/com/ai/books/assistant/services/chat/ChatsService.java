@@ -28,10 +28,10 @@ public class ChatsService implements IChatsService {
     }
 
     @Override
-    public ChatDto createChat(Long userId) {
+    public ChatDto createChat(Long userId, String title) {
         Chat chat = new Chat();
         chat.setUserId(userId);
-        chat.setTitle("New Chat");
+        chat.setTitle(title);
         return ChatsConverter.convertChatToDto(chatRepository.save(chat));
     }
 
