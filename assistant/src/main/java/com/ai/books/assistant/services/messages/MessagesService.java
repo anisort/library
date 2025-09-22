@@ -50,7 +50,7 @@ public class MessagesService implements IMessagesService {
 
         userPrompt = userPromptRepository.save(userPrompt);
 
-        ChatResponse response = assistantService.getAssistantResponse(userPrompt.getPrompt());
+        ChatResponse response = assistantService.getAssistantResponse(userPrompt.getPrompt(), chatId);
 
         AssistantResponse assistantResponse = getAssistantResponse(response, userPrompt);
         assistantResponse = assistantResponseRepository.save(assistantResponse);
@@ -70,13 +70,6 @@ public class MessagesService implements IMessagesService {
             messages.add(new MessageDto(PromptsConverter.convertPromptToDto(userPrompt), AssistantResponsesConverter.convertAssistantResponseToDto(assistantResponse)));
         }
         return messages;
-    }
-
-    @Override
-    public void deleteMessage(Long userPromptId, Long userId) {
-        UserPrompt userPrompt = userPromptRepository.findByIdAndChat_UserId(userPromptId, userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Prompt not found in user's history"));
-        userPromptRepository.delete(userPrompt);
     }
 
     private static AssistantResponse getAssistantResponse(ChatResponse response, UserPrompt userPrompt) {
