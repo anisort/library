@@ -1,8 +1,9 @@
 <div class="chat-input">
-  <input
+  <textarea
     type="text"
     [formControl]="control"
     [class.invalid]="control.invalid && control.touched"
-  />
+  >
+  </textarea>
   <button (click)="submit()" [disabled]="control.invalid">Send</button>
 </div>
