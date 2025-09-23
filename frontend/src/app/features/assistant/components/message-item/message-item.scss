@@ -1,0 +1,64 @@
+:host {
+  display: block;
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+}
+
+.message-bubble {
+  max-width: 900px;
+  border-radius: 12px;
+  padding: 0.75rem 2rem;
+  line-height: 1.5;
+  color: #eee;
+  background: #1e1e1e;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.message-bubble.user {
+  align-self: flex-end;
+  background: #2a2a2a;
+}
+
+.message-bubble.assistant {
+  align-self: flex-start;
+  background: #171717;
+}
+
+.message-bubble p {
+  margin: 0 0 0.5rem 0;
+}
+
+.message-bubble small {
+  display: block;
+  opacity: 0.7;
+  font-size: 0.75rem;
+}
+
+.message-bubble.assistant markdown,
+.message-bubble.assistant p,
+.message-bubble.assistant ul,
+.message-bubble.assistant ol,
+.message-bubble.assistant pre,
+.message-bubble.assistant code {
+  color: #e6e6e6;
+}
+
+.message-bubble.assistant pre {
+  background: #0f0f0f;
+  padding: 0.75rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.message-bubble.assistant pre::-webkit-scrollbar {
+  height: 8px;
+}
+.message-bubble.assistant pre::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
