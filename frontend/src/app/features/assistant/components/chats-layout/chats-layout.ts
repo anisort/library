@@ -61,10 +61,6 @@ export class ChatsLayout implements OnInit{
     this.editingChatId = chatId;
   }
 
-  onCancelEdit() {
-    this.editingChatId = null;
-  }
-
   onRename(chat: Chat) {
     const title = chat.title.trim();
     this.chatsService.changeChatTitle({ title }, chat.id).subscribe({

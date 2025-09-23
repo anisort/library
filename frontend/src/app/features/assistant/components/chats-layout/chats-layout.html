@@ -16,7 +16,7 @@
             [isEditing]="editingChatId === chat.id"
             (menuToggle)="onMenuToggle(chat.id)"
             (startEdit)="onStartEdit(chat.id)"
-            (cancelEdit)="onCancelEdit()"
+            (cancelEdit)="editingChatId = null"
             (rename)="onRename($event)"
             (remove)="onDelete($event)"
           ></app-chat-item>
