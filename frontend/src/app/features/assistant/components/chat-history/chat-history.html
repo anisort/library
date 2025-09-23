@@ -1,5 +1,5 @@
 <div class="chat-history-container">
-  <div class="chat-history">
+  <div class="chat-history" id="chat-scroll">
     @for (message of messages; track message.userPrompt.id) {
       <app-message-item [message]="message"></app-message-item>
     }
