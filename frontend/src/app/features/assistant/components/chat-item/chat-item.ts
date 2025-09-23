@@ -20,11 +20,12 @@ export class ChatItem implements OnInit {
   @Output() remove = new EventEmitter<Chat>();
   @Input() isOpen = false;
   @Output() menuToggle = new EventEmitter<void>();
-  @Input() isEditing = false;           // управляется родителем
+  @Input() isEditing = false;
   @Output() startEdit = new EventEmitter<void>();
   @Output() cancelEdit = new EventEmitter<void>();
 
   @ViewChild('menu') menu!: ElementRef;
+  @ViewChild('editContainer') editContainer!: ElementRef;
 
   titleControl!: FormControl;
 
@@ -42,18 +43,23 @@ export class ChatItem implements OnInit {
     this.rename.emit({ ...this.chat, title: this.titleControl.value });
   }
 
-  cancelEditLocal() {
-    this.cancelEdit.emit();
-  }
-
   requestDelete() {
     this.remove.emit(this.chat);
   }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
-    if (this.menu && this.menu.nativeElement && !this.menu.nativeElement.contains(event.target)) {
-      if (this.isOpen) this.menuToggle.emit();
+
+    const target = event.target as Node;
+    const clickedInsideMenu = this.menu?.nativeElement.contains(target);
+    const clickedInsideEdit = this.editContainer?.nativeElement.contains(target);
+
+    if (this.isOpen && !clickedInsideMenu) {
+      this.menuToggle.emit();
+    }
+
+    if (this.isEditing && !clickedInsideEdit) {
+      this.cancelEdit.emit();
     }
   }
 
