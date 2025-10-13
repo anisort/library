@@ -8,10 +8,12 @@ import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 
 @Service
 public class GeminiAssistantService implements IAssistantService {
@@ -52,15 +54,30 @@ public class GeminiAssistantService implements IAssistantService {
                 .advisors( a -> a.param(ChatMemory.CONVERSATION_ID, chatId))
                 .system(systemMessage)
                 .user(prompt)
-//                .user(u -> u.text("Explain what do you see on this picture?")
-//                        .media(MimeTypeUtils.IMAGE_PNG, new ClassPathResource("/multimodal.test.png"))) for future implementation
                 .call()
                 .chatResponse();
     }
 
     @Override
     public ChatResponse getAssistantResponseMultimodal(String prompt, Long chatId, MultipartFile file) {
-        return null;
+        String contentType = file.getContentType();
+        MimeType mimeType = (contentType != null)
+                ? MimeTypeUtils.parseMimeType(contentType)
+                : MimeTypeUtils.APPLICATION_OCTET_STREAM;
+
+        Resource resource = file.getResource();
+
+        return ChatClient.builder(chatModel)
+                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
+                .build()
+                .prompt()
+                .advisors(new QuestionAnswerAdvisor(vectorStore))
+                .advisors( a -> a.param(ChatMemory.CONVERSATION_ID, chatId))
+                .system(systemMessage)
+                .user(u -> u.text(prompt)
+                        .media(mimeType, resource))
+                .call()
+                .chatResponse();
     }
 
 }
