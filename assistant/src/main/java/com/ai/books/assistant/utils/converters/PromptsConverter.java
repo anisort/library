@@ -9,6 +9,7 @@ public class PromptsConverter {
         UserPromptDto promptDto = new UserPromptDto();
         promptDto.setId(prompt.getId());
         promptDto.setPrompt(prompt.getPrompt());
+        promptDto.setFileLink(prompt.getFileLink());
         promptDto.setCreatedOn(prompt.getCreatedOn());
         return promptDto;
     }

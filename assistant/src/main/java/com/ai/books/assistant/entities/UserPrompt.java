@@ -20,6 +20,9 @@ public class UserPrompt {
     @Column(columnDefinition = "TEXT")
     private String prompt;
 
+    @Column(columnDefinition = "TEXT")
+    private String fileLink;
+
     @CreationTimestamp
     private Instant createdOn;
 

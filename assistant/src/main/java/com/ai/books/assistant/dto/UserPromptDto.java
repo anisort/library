@@ -10,5 +10,6 @@ import java.time.Instant;
 public class UserPromptDto {
     private Long id;
     private String prompt;
+    private String fileLink;
     private Instant createdOn;
 }
