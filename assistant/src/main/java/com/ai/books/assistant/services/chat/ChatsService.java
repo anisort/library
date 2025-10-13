@@ -4,6 +4,7 @@ import com.ai.books.assistant.dto.ChatDto;
 import com.ai.books.assistant.entities.Chat;
 import com.ai.books.assistant.repositories.ChatRepository;
 import com.ai.books.assistant.utils.converters.ChatsConverter;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,9 +15,11 @@ import java.util.List;
 public class ChatsService implements IChatsService {
 
     private final ChatRepository chatRepository;
+    private final ChatMemory chatMemory;
 
-    public ChatsService(ChatRepository chatRepository) {
+    public ChatsService(ChatRepository chatRepository, ChatMemory chatMemory) {
         this.chatRepository = chatRepository;
+        this.chatMemory = chatMemory;
     }
 
     @Override
@@ -47,6 +50,8 @@ public class ChatsService implements IChatsService {
     public void deleteChat(Long chatId, Long userId) {
         Chat chat = chatRepository.findByUserIdAndId(userId, chatId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat not found in user's history"));
+
+        chatMemory.clear(String.valueOf(chatId));
         chatRepository.delete(chat);
     }
 }
