@@ -1,5 +1,23 @@
 <div class="message-container">
   <div class="message-bubble user">
+    @if (message.userPrompt.fileLink) {
+      @if (message.userPrompt.fileLink === 'uploading...') {
+        <div class="file-preview loading">
+          <div class="spinner"></div>
+          <p><i>Uploading file...</i></p>
+        </div>
+      } @else {
+        @if (isImageFile(message.userPrompt.fileLink)) {
+          <img
+            [src]="message.userPrompt.fileLink"
+            alt="'uploaded image'" />
+        } @else {
+          <div class="file-preview">
+              {{ getFileName(message.userPrompt.fileLink) }}
+          </div>
+        }
+      }
+    }
     <p>{{ message.userPrompt.prompt }}</p>
     <small>{{ message.userPrompt.createdOn | date: 'medium' }}</small>
   </div>
@@ -12,4 +30,6 @@
     }
   </div>
 </div>
+
+
 
