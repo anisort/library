@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-chat-input',
