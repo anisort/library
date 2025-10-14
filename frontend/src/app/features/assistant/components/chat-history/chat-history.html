@@ -4,5 +4,8 @@
       <app-message-item [message]="message"></app-message-item>
     }
   </div>
-  <app-chat-input [control]="promptControl" (submitPrompt)="onSubmit()"></app-chat-input>
+  <app-chat-input
+    [control]="promptControl"
+    (submitPrompt)="onSubmit($event)"
+  ></app-chat-input>
 </div>
