@@ -1,37 +1,159 @@
 .chat-input {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 0.5rem;
   padding: 0.75rem;
-  background: #161616;
-  border-top: 1px solid #2a2a2a;
-  border-radius: 10px;
+  border-top: 1px solid #ccc;
+  background-color: #fafafa;
 }
 
-.chat-input textarea[type="text"] {
-  flex: 1;
-  background: #0f0f0f;
-  color: #eee;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 0.6rem 0.75rem;
+.file-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.25s ease;
 }
 
-.chat-input button {
-  background: #27ae60;
+.file-preview-content {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #5e5a5a;
   color: #fff;
-  border: none;
-  padding: 0.6rem 0.9rem;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
+  border-radius: 10px;
+  padding: 0.5rem 0.75rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.chat-input button:disabled {
-  opacity: 0.6;
+.file-preview-content:hover {
+  transform: scale(1.02);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+}
+
+.file-preview-content img {
+  border-radius: 8px;
+  max-width: 140px;
+  height: auto;
+  display: block;
+}
+
+.remove-file {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  border: none;
+  background: #ff5555;
+  color: #fff;
+  font-size: 0.9rem;
+  line-height: 1;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.remove-file:hover {
+  background: #ff2222;
+  opacity: 1;
+}
+
+.input-line {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+textarea {
+  flex: 1;
+  min-height: 60px;
+  max-height: 150px;
+  resize: vertical;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  background: white;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+textarea:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.15);
+}
+
+textarea.invalid {
+  border-color: #e74c3c;
+}
+
+.right-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+input[type='file'] {
+  display: none;
+}
+
+button {
+  border: none;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  height: 36px;
+}
+
+.add-file {
+  background: #e0e0e0;
+  color: #333;
+  font-size: 1.2rem;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-file:hover {
+  background: #d5d5d5;
+  transform: scale(1.05);
+}
+
+button:not(.add-file) {
+  background: #4a90e2;
+  color: white;
+  padding: 0 1rem;
+}
+
+button:not(.add-file):hover:not(:disabled) {
+  background: #367dd6;
+}
+
+button:not(.add-file):active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+button:disabled {
+  background: #a9a9a9;
   cursor: not-allowed;
 }
 
-.chat-input button:hover:not(:disabled) {
-  background: #1e8449;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

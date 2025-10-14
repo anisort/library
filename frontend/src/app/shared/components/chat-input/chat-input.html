@@ -1,9 +1,33 @@
 <div class="chat-input">
-  <textarea
-    type="text"
-    [formControl]="control"
-    [class.invalid]="control.invalid && control.touched"
-  >
-  </textarea>
-  <button (click)="submit()" [disabled]="control.invalid">Send</button>
+  @if (file) {
+    <div class="file-preview">
+      <div class="file-preview-content">
+        @if (preview) {
+          <img [src]="preview" alt="Preview" width="200" height="200" />
+        } @else {
+          <span>{{ file!.name }}</span>
+        }
+        <button class="remove-file" (click)="removeFile()">✖</button>
+      </div>
+    </div>
+  }
+  <div class="input-line">
+    <textarea
+      [formControl]="control"
+      [class.invalid]="control.invalid && control.touched"
+      placeholder="Type your message..."
+    ></textarea>
+
+    <div class="right-buttons">
+      <input type="file" #fileInput (change)="onFileSelected($event)" />
+      <button type="button" class="add-file" (click)="fileInput.click()">＋</button>
+      <button
+        type="button"
+        (click)="submit()"
+        [disabled]="isSendDisabled()"
+      >
+        Send
+      </button>
+    </div>
+  </div>
 </div>
