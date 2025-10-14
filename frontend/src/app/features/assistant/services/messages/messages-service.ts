@@ -20,6 +20,10 @@ export class MessagesService {
     return this.http.post<Message>(`${this.apiUrl}/${chatId}`, prompt);
   }
 
+  sendPromptWithFile(formData: FormData, chatId: number): Observable<Message> {
+    return this.http.post<Message>(`${this.apiUrl}/file/${chatId}`, formData);
+  }
+
   getChatHistory(chatId: number): Observable<Message[]> {
     return this.http.get<Message[]>(`${this.apiUrl}/${chatId}`);
   }
