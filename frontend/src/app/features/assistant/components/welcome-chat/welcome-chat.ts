@@ -3,6 +3,7 @@ import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angula
 import {ChatsService} from '../../services/chats/chats-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ChatInput} from '../../../../shared/components/chat-input/chat-input';
+import {InitialPromptService} from '../../services/state/initial-prompt.service';
 
 @Component({
   selector: 'app-welcome-chat',
@@ -20,25 +21,25 @@ export class WelcomeChat implements OnInit {
   constructor(
     private chatsService: ChatsService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {
-  }
+    private route: ActivatedRoute,
+    private initialPromptService: InitialPromptService,
+  ) {}
 
   ngOnInit() {
     this.promptControl = new FormControl('', [Validators.required]);
   }
 
-  onSubmit() {
-    if (this.promptControl.valid) {
-      const text = this.promptControl.value?.trim();
-      this.chatsService.createChat({ title: text.slice(0, 40) || 'New chat' }).subscribe({
-        next: async (chat) => {
-          await this.router.navigate(['/chats', chat.id], {
-            relativeTo: this.route,
-            state: { initialPrompt: text }
-          });
-        }
-      });
-    }
+  onSubmit(event: { text: string; file?: File }) {
+    const text = event.text?.trim();
+    const file = event.file;
+
+    this.chatsService.createChat({ title: text.slice(0, 40) || 'New chat' }).subscribe({
+      next: async (chat) => {
+        this.initialPromptService.setPrompt({ text, file, chatId: chat.id });
+        await this.router.navigate(['/chats', chat.id], {
+          relativeTo: this.route
+        });
+      }
+    });
   }
 }

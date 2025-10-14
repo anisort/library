@@ -1,4 +1,4 @@
 <div class="welcome-chat-container">
   <h4>Welcome to Books AI Assistant</h4>
-  <app-chat-input [control]="promptControl" (submitPrompt)="onSubmit()"></app-chat-input>
+  <app-chat-input [control]="promptControl" (submitPrompt)="onSubmit($event)"></app-chat-input>
 </div>
