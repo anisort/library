@@ -1,4 +1,4 @@
-package com.books.seeder.dto;
+package com.books.utils.seeder.dto;
 
 import lombok.Getter;
 import lombok.Setter;

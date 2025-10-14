@@ -1,4 +1,4 @@
-package com.auth.converters;
+package com.auth.utils.converters;
 
 import com.auth.dto.UserInfoDto;
 import com.auth.entities.CustomUserDetails;

@@ -1,4 +1,4 @@
-package com.books.converters;
+package com.books.utils.converters;
 
 import com.books.dto.*;
 import com.books.entities.Book;

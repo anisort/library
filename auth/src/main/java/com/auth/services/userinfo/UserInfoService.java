@@ -1,6 +1,6 @@
 package com.auth.services.userinfo;
 
-import com.auth.converters.UsersConverter;
+import com.auth.utils.converters.UsersConverter;
 import com.auth.dto.UserInfoDto;
 import com.auth.entities.CustomUserDetails;
 import com.auth.repositories.UserRepository;

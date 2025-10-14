@@ -1,4 +1,4 @@
-package com.auth.config;
+package com.auth.config.security;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;

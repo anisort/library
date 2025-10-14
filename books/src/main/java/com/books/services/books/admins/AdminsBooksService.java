@@ -1,12 +1,12 @@
 package com.books.services.books.admins;
 
 
-import com.books.converters.BooksConverter;
+import com.books.utils.converters.BooksConverter;
 import com.books.dto.BookSingleItemDto;
 import com.books.dto.CreateBookDto;
 import com.books.entities.Book;
 import com.books.repositories.BooksRepository;
-import com.books.utils.services.ICloudService;
+import com.books.services.storage.ICloudService;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;

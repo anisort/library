@@ -1,9 +1,9 @@
-package com.books.seeder.services;
+package com.books.utils.seeder.services;
 
 import com.books.entities.Book;
 import com.books.repositories.BooksRepository;
-import com.books.seeder.dto.GutenBookDto;
-import com.books.seeder.dto.GutendexResponseDto;
+import com.books.utils.seeder.dto.GutenBookDto;
+import com.books.utils.seeder.dto.GutendexResponseDto;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
-package com.books.seeder.components;
+package com.books.utils.seeder.components;
 
 import com.books.repositories.BooksRepository;
-import com.books.seeder.services.BooksImportService;
-import com.books.seeder.services.IBookImportService;
+import com.books.utils.seeder.services.BooksImportService;
+import com.books.utils.seeder.services.IBookImportService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

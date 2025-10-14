@@ -1,4 +1,4 @@
-package com.books.config;
+package com.books.config.embeddings;
 
 import org.springframework.ai.vertexai.embedding.VertexAiEmbeddingConnectionDetails;
 import org.springframework.ai.vertexai.embedding.text.VertexAiTextEmbeddingModel;

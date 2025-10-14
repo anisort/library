@@ -1,4 +1,4 @@
-package com.books.config;
+package com.books.config.storage;
 
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;

@@ -1,4 +1,4 @@
-package com.books.seeder.services;
+package com.books.utils.seeder.services;
 
 public interface IBookImportService {
 

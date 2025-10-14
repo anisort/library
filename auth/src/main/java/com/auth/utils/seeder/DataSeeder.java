@@ -1,4 +1,4 @@
-package com.auth.config;
+package com.auth.utils.seeder;
 
 import com.auth.entities.CustomUserDetails;
 import com.auth.repositories.UserRepository;

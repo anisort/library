@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.books.dto.BookItemDto;
-import com.books.converters.BooksConverter;
+import com.books.utils.converters.BooksConverter;
 import org.mockito.MockedStatic;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

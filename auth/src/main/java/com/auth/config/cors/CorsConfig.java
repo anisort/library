@@ -1,4 +1,4 @@
-package com.auth.config;
+package com.auth.config.cors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

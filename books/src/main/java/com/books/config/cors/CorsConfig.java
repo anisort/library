@@ -1,4 +1,4 @@
-package com.books.config;
+package com.books.config.cors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

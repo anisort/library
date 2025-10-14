@@ -1,4 +1,4 @@
-package com.books.seeder.config;
+package com.books.utils.seeder.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

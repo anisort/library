@@ -1,6 +1,6 @@
 package com.books.services.books.all;
 
-import com.books.converters.BooksConverter;
+import com.books.utils.converters.BooksConverter;
 import com.books.dto.BookItemDto;
 import com.books.dto.BookSingleItemDto;
 import com.books.entities.Book;
