@@ -1,14 +1,13 @@
 package com.books.services.books.admins;
 
 
+import com.books.services.embeddings.IVectorStoreService;
 import com.books.utils.converters.BooksConverter;
 import com.books.dto.BookSingleItemDto;
 import com.books.dto.CreateBookDto;
 import com.books.entities.Book;
 import com.books.repositories.BooksRepository;
 import com.books.services.storage.ICloudService;
-import org.springframework.ai.document.Document;
-import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -25,13 +22,13 @@ public class AdminsBooksService implements IAdminsBooksService {
 
     private final BooksRepository booksRepository;
     private final ICloudService gcsService;
-    private final VectorStore vectorStore;
+    private final IVectorStoreService<Book> vectorService;
 
     @Autowired
-    public AdminsBooksService(BooksRepository booksRepository, ICloudService gcsService, VectorStore vectorStore) {
+    public AdminsBooksService(BooksRepository booksRepository, ICloudService gcsService, IVectorStoreService<Book> vectorService) {
         this.booksRepository = booksRepository;
         this.gcsService = gcsService;
-        this.vectorStore = vectorStore;
+        this.vectorService = vectorService;
     }
 
     @Override
@@ -40,17 +37,7 @@ public class AdminsBooksService implements IAdminsBooksService {
         createBookDto.setCoverLink(fileUrl);
         Book book = BooksConverter.convertCreateBookDtoToBook(createBookDto);
         Book savedBook = booksRepository.save(book);
-
-        UUID uuid = UUID.nameUUIDFromBytes(String.valueOf(book.getId()).getBytes());
-        Document document = new Document(uuid.toString(), book.getSummary(), Map.of(
-                "id", book.getId(),
-                "title", book.getTitle(),
-                "author", book.getAuthor(),
-                "coverLink", book.getCoverLink(),
-                "link", book.getLink()
-        ));
-        vectorStore.add(List.of(document));
-
+        vectorService.addToVectorStore(savedBook);
         return BooksConverter.convertBookToBookSingleItemDto(savedBook);
     }
 
@@ -70,16 +57,7 @@ public class AdminsBooksService implements IAdminsBooksService {
         BooksConverter.updateBookEntity(book, updateBookDto);
         book = booksRepository.save(book);
 
-        UUID uuid = UUID.nameUUIDFromBytes(String.valueOf(book.getId()).getBytes());
-        vectorStore.delete(List.of(String.valueOf(uuid)));
-        Document document = new Document(uuid.toString(), book.getSummary(), Map.of(
-                "id", book.getId(),
-                "title", book.getTitle(),
-                "author", book.getAuthor(),
-                "coverLink", book.getCoverLink(),
-                "link", book.getLink()
-        ));
-        vectorStore.add(List.of(document));
+        vectorService.updateInVectorStore(book);
 
         return BooksConverter.convertBookToBookSingleItemDto(book);
     }
@@ -90,10 +68,7 @@ public class AdminsBooksService implements IAdminsBooksService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found with id " + id));
 
         gcsService.deleteFile(book.getCoverLink());
-
-        UUID uuid = UUID.nameUUIDFromBytes(String.valueOf(book.getId()).getBytes());
-        vectorStore.delete(List.of(String.valueOf(uuid)));
-
+        vectorService.deleteFromVectorStore(book.getId());
         booksRepository.delete(book);
     }
 

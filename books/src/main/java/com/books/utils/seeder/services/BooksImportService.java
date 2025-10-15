@@ -2,10 +2,9 @@ package com.books.utils.seeder.services;
 
 import com.books.entities.Book;
 import com.books.repositories.BooksRepository;
+import com.books.services.embeddings.IVectorStoreService;
 import com.books.utils.seeder.dto.GutenBookDto;
 import com.books.utils.seeder.dto.GutendexResponseDto;
-import org.springframework.ai.document.Document;
-import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -13,10 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+
 
 @Service
 public class BooksImportService implements IBookImportService{
@@ -26,13 +22,13 @@ public class BooksImportService implements IBookImportService{
 
     private final RestTemplate restTemplate;
     private final BooksRepository booksRepository;
-    private final VectorStore vectorStore;
+    private final IVectorStoreService<Book> vectorService;
 
     @Autowired
-    public BooksImportService(RestTemplate restTemplate, BooksRepository booksRepository, VectorStore vectorStore) {
+    public BooksImportService(RestTemplate restTemplate, BooksRepository booksRepository, IVectorStoreService<Book> vectorService) {
         this.restTemplate = restTemplate;
         this.booksRepository = booksRepository;
-        this.vectorStore = vectorStore;
+        this.vectorService = vectorService;
     }
 
     @Override
@@ -51,7 +47,6 @@ public class BooksImportService implements IBookImportService{
             GutendexResponseDto data = response.getBody();
             if (data == null) break;
 
-            List<Document> documents = new ArrayList<>();
             for (GutenBookDto gBook : data.getResults()) {
                 if (gBook.getAuthors().isEmpty() || gBook.getSummaries().isEmpty()) continue;
 
@@ -69,19 +64,8 @@ public class BooksImportService implements IBookImportService{
 
                 book = booksRepository.save(book);
 
-                UUID uuid = UUID.nameUUIDFromBytes(String.valueOf(book.getId()).getBytes());
-                Document document = new Document(uuid.toString(), book.getSummary(), Map.of(
-                        "id", book.getId(),
-                        "title", book.getTitle(),
-                        "author", book.getAuthor(),
-                        "coverLink", book.getCoverLink(),
-                        "link", book.getLink()
-                ));
-
-                documents.add(document);
+                vectorService.addToVectorStore(book);
             }
-
-            vectorStore.add(documents);
 
             url = data.getNext();
             pagesProcessed++;
