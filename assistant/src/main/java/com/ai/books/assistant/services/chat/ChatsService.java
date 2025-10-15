@@ -2,7 +2,10 @@ package com.ai.books.assistant.services.chat;
 
 import com.ai.books.assistant.dto.ChatDto;
 import com.ai.books.assistant.entities.Chat;
+import com.ai.books.assistant.entities.UserPrompt;
 import com.ai.books.assistant.repositories.ChatRepository;
+import com.ai.books.assistant.repositories.UserPromptRepository;
+import com.ai.books.assistant.services.storage.ICloudService;
 import com.ai.books.assistant.utils.converters.ChatsConverter;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.http.HttpStatus;
@@ -15,11 +18,15 @@ import java.util.List;
 public class ChatsService implements IChatsService {
 
     private final ChatRepository chatRepository;
+    private final UserPromptRepository userPromptRepository;
     private final ChatMemory chatMemory;
+    private final ICloudService gcsService;
 
-    public ChatsService(ChatRepository chatRepository, ChatMemory chatMemory) {
+    public ChatsService(ChatRepository chatRepository, UserPromptRepository userPromptRepository, ChatMemory chatMemory, ICloudService gcsService) {
         this.chatRepository = chatRepository;
+        this.userPromptRepository = userPromptRepository;
         this.chatMemory = chatMemory;
+        this.gcsService = gcsService;
     }
 
     @Override
@@ -52,6 +59,15 @@ public class ChatsService implements IChatsService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat not found in user's history"));
 
         chatMemory.clear(String.valueOf(chatId));
+
+        List<UserPrompt> prompts = userPromptRepository.findAllByChatId(chatId);
+        for (UserPrompt prompt : prompts) {
+            String fileLink = prompt.getFileLink();
+            if (fileLink != null) {
+                gcsService.deleteFile(fileLink);
+            }
+        }
+
         chatRepository.delete(chat);
     }
 }
