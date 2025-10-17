@@ -142,6 +142,7 @@ services:
       - "5436:5432"
     volumes:
       - pg-data-books:/var/lib/postgresql/data
+      - ./db/books_init.sql:/docker-entrypoint-initdb.d/pgvector_books_init.sql:ro
     networks:
       - lib-network
 

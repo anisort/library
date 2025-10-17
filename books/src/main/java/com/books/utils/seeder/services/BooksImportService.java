@@ -35,7 +35,7 @@ public class BooksImportService implements IBookImportService{
     public void importBooks() {
         String url = seedingUrl;
         int pagesProcessed = 0;
-        final int MAX_PAGES = 15;
+        final int MAX_PAGES = 3;
 
         while (url != null && pagesProcessed < MAX_PAGES) {
 
