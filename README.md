@@ -87,6 +87,7 @@ assistant/     → Spring Boot Assistant service sources
 frontend/      → Angular application sources
 dockerfiles/   → Dockerfiles for all services
 nginx/         → Nginx config (default.conf)
+ui-tests/      → Functional or UI test scaffolding
 docker-compose.yaml → Orchestrates all services for local development
 env.example    → Example environment variables for Compose
 ```
