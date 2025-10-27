@@ -67,7 +67,7 @@ public class MessagesService implements IMessagesService {
             AssistantResponse assistantResponse = assistantResponseRepository.findByUserPromptId(userPrompt.getId())
                     .orElseGet(() -> {
                         AssistantResponse placeholder = new AssistantResponse();
-                        placeholder.setId(-1L);
+                        placeholder.setId(null);
                         placeholder.setResponse("Response not found for this prompt");
                         placeholder.setPromptTokens(0);
                         placeholder.setCompletionTokens(0);
