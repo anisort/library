@@ -127,7 +127,7 @@ services:
     ports:
       - "5435:5432"
     volumes:
-      - pg-data-auth:/var/lib/postgresql/data
+      - pg-data-auth:/var/lib/postgresql
     networks:
       - lib-network
 
@@ -141,8 +141,7 @@ services:
     ports:
       - "5436:5432"
     volumes:
-      - pg-data-books:/var/lib/postgresql/data
-      - ./db/books_init.sql:/docker-entrypoint-initdb.d/pgvector_books_init.sql:ro
+      - pg-data-books:/var/lib/postgresql
     networks:
       - lib-network
 
@@ -156,7 +155,7 @@ services:
     ports:
       - "5437:5432"
     volumes:
-      - pg-data-assistant:/var/lib/postgresql/data
+      - pg-data-assistant:/var/lib/postgresql
     networks:
       - lib-network
 
