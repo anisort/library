@@ -217,14 +217,6 @@ See `env.example`.
 
 ## Development tips
 
-* **Frontend:**
-
-  ```bash
-  npm run start -- --host 0.0.0.0
-  ```
-
-  Exposed on port 4200 with live reload.
-
 * **Backend:**
   Auth, Books, and Assistant are Spring Boot 3.x (Java 21).
   You can run each locally with Maven if `.env` variables are set:
