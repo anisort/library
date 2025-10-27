@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class BooksImportService implements IBookImportService{
@@ -47,6 +50,8 @@ public class BooksImportService implements IBookImportService{
             GutendexResponseDto data = response.getBody();
             if (data == null) break;
 
+            List<Book> books = new ArrayList<>();
+
             for (GutenBookDto gBook : data.getResults()) {
                 if (gBook.getAuthors().isEmpty() || gBook.getSummaries().isEmpty()) continue;
 
@@ -63,9 +68,17 @@ public class BooksImportService implements IBookImportService{
                 book.setCoverLink(coverLink);
 
                 book = booksRepository.save(book);
-
-                vectorService.addToVectorStore(book);
+                books.add(book);
             }
+
+            vectorService.addToVectorStore(books);
+
+            System.out.printf("Page %d processed (%d books). Waiting 1 min...%n", pagesProcessed + 1, books.size());
+
+            try {
+                System.out.println("Waiting 1 minute before next page...");
+                Thread.sleep(60000);
+            } catch (InterruptedException ignored) {}
 
             url = data.getNext();
             pagesProcessed++;

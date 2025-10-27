@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -37,7 +38,7 @@ public class AdminsBooksService implements IAdminsBooksService {
         createBookDto.setCoverLink(fileUrl);
         Book book = BooksConverter.convertCreateBookDtoToBook(createBookDto);
         Book savedBook = booksRepository.save(book);
-        vectorService.addToVectorStore(savedBook);
+        vectorService.addToVectorStore(List.of(savedBook));
         return BooksConverter.convertBookToBookSingleItemDto(savedBook);
     }
 
