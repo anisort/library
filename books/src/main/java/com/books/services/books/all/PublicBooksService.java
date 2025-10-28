@@ -8,6 +8,7 @@ import com.books.repositories.BooksRepository;
 import com.books.repositories.UserBooksRepository;
 import com.books.repositories.projections.TopBookProjection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +30,9 @@ public class PublicBooksService implements IPublicBooksService{
         this.userBooksRepository = userBooksRepository;
     }
 
+    // cache
     @Override
+    @Cacheable(value =  "ALL_BOOKS_CACHE")
     public Page<BookItemDto> getAllBooks(Pageable pageable, String letter) {
         Page<Book> books;
         if (letter != null && !letter.isEmpty()) {
@@ -40,7 +43,9 @@ public class PublicBooksService implements IPublicBooksService{
         return books.map(BooksConverter::convertBookToBookItemDto);
     }
 
+    // cache
     @Override
+    @Cacheable(value = "TOP_BOOKS_CACHE")
     public List<BookItemDto> getTopBooks(int limit) {
         Pageable pageable = PageRequest.of(0, limit);
         List<TopBookProjection> topBooks = userBooksRepository.findTopBooks(pageable);
@@ -62,7 +67,9 @@ public class PublicBooksService implements IPublicBooksService{
                 .toList();
     }
 
+    // cache
     @Override
+    @Cacheable(value = "BOOK_CACHE", key = "#id")
     public BookSingleItemDto getBookById(Long id) {
         Book book = booksRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found with id " + id));

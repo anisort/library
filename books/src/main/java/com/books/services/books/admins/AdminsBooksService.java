@@ -9,6 +9,11 @@ import com.books.entities.Book;
 import com.books.repositories.BooksRepository;
 import com.books.services.storage.ICloudService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,15 +29,19 @@ public class AdminsBooksService implements IAdminsBooksService {
     private final BooksRepository booksRepository;
     private final ICloudService gcsService;
     private final IVectorStoreService<Book> vectorService;
+    private final CacheManager cacheManager;
 
     @Autowired
-    public AdminsBooksService(BooksRepository booksRepository, ICloudService gcsService, IVectorStoreService<Book> vectorService) {
+    public AdminsBooksService(BooksRepository booksRepository, ICloudService gcsService, IVectorStoreService<Book> vectorService, CacheManager cacheManager) {
         this.booksRepository = booksRepository;
         this.gcsService = gcsService;
         this.vectorService = vectorService;
+        this.cacheManager = cacheManager;
     }
 
     @Override
+    @CachePut(value = "BOOK_CACHE", key = "#result.getId()")
+    @CacheEvict(value = "ALL_BOOKS_CACHE", allEntries = true)
     public BookSingleItemDto createBook(CreateBookDto createBookDto, MultipartFile file) throws IOException {
         String fileUrl = gcsService.uploadFile(file, UUID.randomUUID() + "-" + file.getOriginalFilename());
         createBookDto.setCoverLink(fileUrl);
@@ -43,6 +52,8 @@ public class AdminsBooksService implements IAdminsBooksService {
     }
 
     @Override
+    @CachePut(value = "BOOK_CACHE", key = "#result.getId()")
+    @CacheEvict(value = "ALL_BOOKS_CACHE", allEntries = true)
     public BookSingleItemDto updateBook(Long id, CreateBookDto updateBookDto, MultipartFile newFile) throws IOException {
         Book book = booksRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found with id " + id));
@@ -60,10 +71,16 @@ public class AdminsBooksService implements IAdminsBooksService {
 
         vectorService.updateInVectorStore(book);
 
+        // TODO: If the updated book exists in TOP_BOOKS_CACHE, update its cached entry by ID.
+
         return BooksConverter.convertBookToBookSingleItemDto(book);
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "BOOK_CACHE", key = "#id"),
+            @CacheEvict(value = "ALL_BOOKS_CACHE", allEntries = true)
+    })
     public void deleteBook(Long id) {
         Book book = booksRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found with id " + id));
@@ -71,6 +88,8 @@ public class AdminsBooksService implements IAdminsBooksService {
         gcsService.deleteFile(book.getCoverLink());
         vectorService.deleteFromVectorStore(book.getId());
         booksRepository.delete(book);
+
+        // TODO: If the deleted book exists in TOP_BOOKS_CACHE, evict or refresh the cache to keep it consistent.
     }
 
 }
