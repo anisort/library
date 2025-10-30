@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../../../../enviroments/environment';
 import {Observable} from 'rxjs';
-import {PageResponse} from '../../../../core/models/pagination-response.model';
+import {PagedResponse} from '../../../../core/models/pagination-response.model';
 import {MyBookItemModel} from '../../models/my-book-item.model';
 import {MyBookSingleItemModel} from '../../models/my-book-single-item.model';
 import {AddBookStatusModel} from '../../models/add-book-status.model';
@@ -20,10 +20,10 @@ export class UserBooksService {
     this.apiUrl = `${environment.apiUrlBooks}/user/books`;
   }
 
-  getUserBooks(page: number, size: number, sort: string, bookStatus: string): Observable<PageResponse<MyBookItemModel>> {
+  getUserBooks(page: number, size: number, sort: string, bookStatus: string): Observable<PagedResponse<MyBookItemModel>> {
     let params = new HttpParams();
     params = params.set('page', page.toString()).set('size', size.toString()).set('sort', sort).set('bookStatus', bookStatus);
-    return this.http.get<PageResponse<MyBookItemModel>>(this.apiUrl, {params});
+    return this.http.get<PagedResponse<MyBookItemModel>>(this.apiUrl, {params});
   }
 
   getBookStatusInUserLibrary(id: number): Observable<string | null> {

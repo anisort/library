@@ -34,7 +34,7 @@ export class TopBookList implements OnInit {
     this.isLoading = true;
     this.publicBooksService.getTopBooks().subscribe({
       next: (response) => {
-        this.topBooks = response;
+        this.topBooks = response.books;
       },
       error: (err) => {
         console.log(err)

@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../../../../enviroments/environment';
-import {PageResponse} from '../../../../core/models/pagination-response.model';
+import {PagedResponse} from '../../../../core/models/pagination-response.model';
 import {BookItemModel} from '../../models/book-item.model';
 import {BookSingleItemModel} from '../../models/book-single-item.model';
+import {BookItemListModel} from '../../models/book-item-list.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,14 +20,14 @@ export class PublicBooksService {
     this.apiUrl = `${environment.apiUrlBooks}/public/books`
   }
 
-  getAllBooks(page: number, size: number, sort: string, letter: string): Observable<PageResponse<BookItemModel>> {
+  getAllBooks(page: number, size: number, sort: string, letter: string): Observable<PagedResponse<BookItemModel>> {
     let params = new HttpParams();
     params = params.set('page', page.toString()).set('size', size.toString()).set('sort', sort).set('letter', letter);
-    return this.http.get<PageResponse<BookItemModel>>(this.apiUrl, {params});
+    return this.http.get<PagedResponse<BookItemModel>>(this.apiUrl, {params});
   }
 
-  getTopBooks(): Observable<BookItemModel[]> {
-    return this.http.get<BookItemModel[]>(`${this.apiUrl}/top`);
+  getTopBooks(): Observable<BookItemListModel> {
+    return this.http.get<BookItemListModel>(`${this.apiUrl}/top`);
   }
 
   searchBooks(filter: string, searchText: string): Observable<BookItemModel[]> {
