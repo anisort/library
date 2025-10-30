@@ -174,6 +174,32 @@ The Books service automatically seeds initial data (books and genres) from **Gut
 
 ---
 
+## Caching and performance
+
+The **Books service** supports **server-side caching** using **Redis** for frequently accessed resources such as public book listings and top books.
+This reduces database load and improves response times for high-traffic endpoints
+
+**Cache behaviour:**
+
+* Default TTL: **10 minutes**
+* JSON serialization via `GenericJackson2JsonRedisSerializer`
+* Null values are not cached
+* Configured globally through `RedisCacheManager`
+
+---
+
+## Caching in the Books service
+
+* Caching is enabled via `@EnableCaching` and configured in `RedisConfig`.
+* The following caches are defined:
+
+    * `BOOK_CACHE` — individual book details
+    * `ALL_BOOKS_CACHE` — paginated public book listings
+    * `TOP_BOOKS_CACHE` — top books displayed on the homepage
+* Cached entries are automatically invalidated or updated after data changes (e.g., book creation, update, or deletion).
+
+---
+
 ## Environment variables
 
 See `env.example`.
@@ -183,15 +209,23 @@ See `env.example`.
 #### Databases
 
 | Variable                                                            | Description          |
-| ------------------------------------------------------------------- | -------------------- |
+|---------------------------------------------------------------------|----------------------|
 | DB_USER, DB_PASSWORD                                                | Database credentials |
 | DB_AUTH_DATABASE, DB_BOOKS_DATABASE, DB_ASSISTANT_DATABASE          | Database names       |
 | DATASOURCE_AUTH_URL, DATASOURCE_BOOKS_URL, DATASOURCE_ASSISTANT_URL | JDBC connection URLs |
 
+#### Vector store
+
+| Variable           | Description                                                              |
+|--------------------|--------------------------------------------------------------------------|
+| INDEX_TYPE         | Indexing method used by pgvector (e.g. `hnsw`, `ivfflat`)                |
+| DISTANCE_TYPE      | Distance metric for similarity search (`cosine_distance`)                |
+| INITIALIZE_SCHEMA  | Whether to auto-initialize pgvector schema on startup (`true` / `false`) |
+
 #### Auth configuration
 
 | Variable                                                      | Description               |
-| ------------------------------------------------------------- | ------------------------- |
+|---------------------------------------------------------------|---------------------------|
 | ISSUER_URI, JWK_SET_URI                                       | JWT issuer and keys       |
 | CLIENT_ID, CLIENT_SECRET, REDIRECT_URI                        | OAuth2 configuration      |
 | FRONTEND_URL_PROXY, FRONTEND_URL_HOST, FRONTEND_URL_CONTAINER | CORS and redirect origins |
@@ -199,7 +233,7 @@ See `env.example`.
 #### Google Cloud
 
 | Variable                          | Description                                      |
-| --------------------------------- | ------------------------------------------------ |
+|-----------------------------------|--------------------------------------------------|
 | GCP_PROJECT_ID, GCP_LOCATION      | GCP environment settings                         |
 | GCP_EMBEDDING_MODEL               | Vertex AI embedding model (`text-embedding-004`) |
 | GCP_GEMINI_MODEL                  | Gemini model for assistant (`gemini-2.0-flash`)  |
@@ -207,10 +241,18 @@ See `env.example`.
 | GCP_STORAGE_BUCKET_NAME_ASSISTANT | Storage bucket for assistant data                |
 | GOOGLE_APPLICATION_CREDENTIALS    | Path to mounted GCP service account JSON         |
 
+### Redis environment variables
+
+| Variable   | Description                                          |
+|------------|------------------------------------------------------|
+| REDIS_HOST | Redis hostname or container name (`redis-cache`)     |
+| REDIS_PORT | Redis port (default: `6379`)                         |
+| CACHE_TYPE | Cache provider type (set to `redis` to enable Redis) |
+
 #### Seeding
 
 | Variable              | Description                        |
-| --------------------- | ---------------------------------- |
+|-----------------------|------------------------------------|
 | BOOKS_API_SEEDING_URL | Gutendex endpoint for initial data |
 
 ---
@@ -230,9 +272,10 @@ See `env.example`.
 * **Data persistence:**
   Stored in Docker volumes:
 
-    * `pg-data-auth`
-    * `pg-data-books`
-    * `pg-data-assistant`
+    * `pg-data-auth` — authentication data
+    * `pg-data-books` — book catalog and embeddings
+    * `pg-data-assistant` — assistant chat and context memory
+    * `redis-data` — Redis cache data (for caching top books, book pages, etc.)
 
 * **Reapply .env changes:**
 
@@ -252,7 +295,7 @@ See `env.example`.
   Verify hostnames in JDBC URLs use Docker service names (`pg-auth`, `pg-books`, `pg-assistant`).
 
 * **Ports conflict:**
-  Ensure ports 80, 4200, 7070, 8080, 9090, 5435–5437 are available.
+  Ensure ports 80, 4200, 7070, 8080, 9090, 5435–5437, 6379 are available.
 
 * **Auth redirect errors:**
   Make sure `FRONTEND_URL_*` and `REDIRECT_URI` match your running URLs.
