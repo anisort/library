@@ -1,6 +1,7 @@
 package com.books.services.books.admins;
 
-
+import com.books.dto.BookItemDto;
+import com.books.services.cache.ICacheUpdateService;
 import com.books.services.embeddings.IVectorStoreService;
 import com.books.utils.converters.BooksConverter;
 import com.books.dto.BookSingleItemDto;
@@ -9,10 +10,8 @@ import com.books.entities.Book;
 import com.books.repositories.BooksRepository;
 import com.books.services.storage.ICloudService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,14 +28,19 @@ public class AdminsBooksService implements IAdminsBooksService {
     private final BooksRepository booksRepository;
     private final ICloudService gcsService;
     private final IVectorStoreService<Book> vectorService;
-    private final CacheManager cacheManager;
+    private final ICacheUpdateService<BookItemDto> cacheUpdateService;
 
     @Autowired
-    public AdminsBooksService(BooksRepository booksRepository, ICloudService gcsService, IVectorStoreService<Book> vectorService, CacheManager cacheManager) {
+    public AdminsBooksService(
+            BooksRepository booksRepository,
+            ICloudService gcsService,
+            IVectorStoreService<Book> vectorService,
+            ICacheUpdateService<BookItemDto> cacheUpdateService
+    ) {
         this.booksRepository = booksRepository;
         this.gcsService = gcsService;
         this.vectorService = vectorService;
-        this.cacheManager = cacheManager;
+        this.cacheUpdateService = cacheUpdateService;
     }
 
     @Override
@@ -71,7 +75,8 @@ public class AdminsBooksService implements IAdminsBooksService {
 
         vectorService.updateInVectorStore(book);
 
-        // TODO: If the updated book exists in TOP_BOOKS_CACHE, update its cached entry by ID.
+        BookSingleItemDto updatedDto = BooksConverter.convertBookToBookSingleItemDto(book);
+        cacheUpdateService.updateIfPresent("TOP_BOOKS_CACHE", "top", BooksConverter.convertBookSingleToBookItemDto(updatedDto));
 
         return BooksConverter.convertBookToBookSingleItemDto(book);
     }
@@ -88,8 +93,7 @@ public class AdminsBooksService implements IAdminsBooksService {
         gcsService.deleteFile(book.getCoverLink());
         vectorService.deleteFromVectorStore(book.getId());
         booksRepository.delete(book);
-
-        // TODO: If the deleted book exists in TOP_BOOKS_CACHE, evict or refresh the cache to keep it consistent.
+        cacheUpdateService.evictIfContains("TOP_BOOKS_CACHE", "top", id);
     }
 
 }
