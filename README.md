@@ -241,7 +241,7 @@ See `env.example`.
 | GCP_STORAGE_BUCKET_NAME_ASSISTANT | Storage bucket for assistant data                |
 | GOOGLE_APPLICATION_CREDENTIALS    | Path to mounted GCP service account JSON         |
 
-### Redis environment variables
+#### Redis environment variables
 
 | Variable   | Description                                          |
 |------------|------------------------------------------------------|
