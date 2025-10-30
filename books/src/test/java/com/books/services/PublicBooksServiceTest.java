@@ -1,6 +1,8 @@
 package com.books.services;
 
+import com.books.dto.BookItemListDto;
 import com.books.dto.BookSingleItemDto;
+import com.books.dto.PagedResponseDto;
 import com.books.entities.Book;
 import com.books.repositories.BooksRepository;
 import com.books.repositories.UserBooksRepository;
@@ -55,7 +57,7 @@ public class PublicBooksServiceTest {
         try (MockedStatic<BooksConverter> st = mockStatic(BooksConverter.class)) {
             st.when(() -> BooksConverter.convertBookToBookItemDto(book)).thenReturn(bookItemDto);
 
-            Page<BookItemDto> result = publicBooksService.getAllBooks(PageRequest.of(0, 10), null);
+            PagedResponseDto<BookItemDto> result = publicBooksService.getAllBooks(PageRequest.of(0, 10), null);
 
             assertEquals(1, result.getTotalElements());
             assertEquals("Title", result.getContent().getFirst().getTitle());
@@ -79,7 +81,7 @@ public class PublicBooksServiceTest {
         try (var st = mockStatic(BooksConverter.class)) {
             st.when(() -> BooksConverter.convertBookToBookItemDto(bookA)).thenReturn(bookItemDtoA);
 
-            Page<BookItemDto> result = publicBooksService.getAllBooks(PageRequest.of(0,5), "A");
+            PagedResponseDto<BookItemDto> result = publicBooksService.getAllBooks(PageRequest.of(0,5), "A");
 
             assertEquals(1, result.getTotalElements());
             assertEquals("Alpha", result.getContent().getFirst().getTitle());
@@ -98,12 +100,12 @@ public class PublicBooksServiceTest {
         try (MockedStatic<BooksConverter> st = mockStatic(BooksConverter.class)) {
             st.when(() -> BooksConverter.convertBookToBookItemDto(book)).thenReturn(bookItemDto);
 
-            List<BookItemDto> result = publicBooksService.getTopBooks(3);
+            BookItemListDto result = publicBooksService.getTopBooks(3);
 
-            assertEquals(1, result.size());
-            assertEquals("Top Book", result.getFirst().getTitle());
-            assertEquals("Top Author", result.getFirst().getAuthor());
-            assertEquals("Cover link", result.getFirst().getCoverLink());
+            assertEquals(1, result.getBooks().size());
+            assertEquals("Top Book", result.getBooks().getFirst().getTitle());
+            assertEquals("Top Author", result.getBooks().getFirst().getAuthor());
+            assertEquals("Cover link", result.getBooks().getFirst().getCoverLink());
 
             verify(userBooksRepository).findTopBooks(PageRequest.of(0, 3));
         }

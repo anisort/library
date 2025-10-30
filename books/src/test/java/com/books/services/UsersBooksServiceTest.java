@@ -1,5 +1,6 @@
 package com.books.services;
 
+import com.books.dto.PagedResponseDto;
 import com.books.utils.converters.BooksConverter;
 import com.books.dto.MyBookItemDto;
 import com.books.dto.MyBookSingleItemDto;
@@ -56,7 +57,7 @@ public class UsersBooksServiceTest {
             MyBookItemDto myBookItemDto = new MyBookItemDto();
             converterMock.when(() -> BooksConverter.convertBookToMyBookItemDto(book, BookStatus.READING)).thenReturn(myBookItemDto);
 
-            Page<MyBookItemDto> result = userBooksService.getUserBooks(userId, pageable, null);
+            PagedResponseDto<MyBookItemDto> result = userBooksService.getUserBooks(userId, pageable, null);
 
             assertEquals(1, result.getTotalElements());
             assertSame(myBookItemDto, result.getContent().getFirst());
