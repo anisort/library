@@ -46,6 +46,15 @@ public class BooksConverter {
         return book;
     }
 
+    public static BookItemDto convertBookSingleToBookItemDto(BookSingleItemDto bookSingleItemDto) {
+        BookItemDto bookItemDto = new BookItemDto();
+        bookItemDto.setId(bookSingleItemDto.getId());
+        bookItemDto.setTitle(bookSingleItemDto.getTitle());
+        bookItemDto.setAuthor(bookSingleItemDto.getAuthor());
+        bookItemDto.setCoverLink(bookSingleItemDto.getCoverLink());
+        return bookItemDto;
+    }
+
     public static void updateBookEntity(Book book, CreateBookDto dto) {
         book.setTitle(dto.getTitle());
         book.setAuthor(dto.getAuthor());

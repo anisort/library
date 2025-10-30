@@ -1,9 +1,10 @@
 package com.books.controllers;
 
 import com.books.dto.BookItemDto;
+import com.books.dto.BookItemListDto;
 import com.books.dto.BookSingleItemDto;
+import com.books.dto.PagedResponseDto;
 import com.books.services.books.all.IPublicBooksService;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +21,12 @@ public class PublicBooksController {
     }
 
     @GetMapping()
-    public Page<BookItemDto> getAllBooks(Pageable pageable, @RequestParam(required = false) String letter) {
+    public PagedResponseDto<BookItemDto> getAllBooks(Pageable pageable, @RequestParam(required = false) String letter) {
         return publicBooksService.getAllBooks(pageable, letter);
     }
 
     @GetMapping("/top")
-    public List<BookItemDto> getTopBooks(@RequestParam(defaultValue = "8") int limit) {
+    public BookItemListDto getTopBooks(@RequestParam(defaultValue = "8") int limit) {
         return publicBooksService.getTopBooks(limit);
     }
 

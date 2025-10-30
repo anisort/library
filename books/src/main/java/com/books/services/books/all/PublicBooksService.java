@@ -1,5 +1,7 @@
 package com.books.services.books.all;
 
+import com.books.dto.BookItemListDto;
+import com.books.dto.PagedResponseDto;
 import com.books.utils.converters.BooksConverter;
 import com.books.dto.BookItemDto;
 import com.books.dto.BookSingleItemDto;
@@ -7,6 +9,7 @@ import com.books.entities.Book;
 import com.books.repositories.BooksRepository;
 import com.books.repositories.UserBooksRepository;
 import com.books.repositories.projections.TopBookProjection;
+import com.books.utils.converters.PageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -30,28 +33,38 @@ public class PublicBooksService implements IPublicBooksService{
         this.userBooksRepository = userBooksRepository;
     }
 
-    // cache
     @Override
-    @Cacheable(value =  "ALL_BOOKS_CACHE")
-    public Page<BookItemDto> getAllBooks(Pageable pageable, String letter) {
+    @Cacheable(
+            value = "ALL_BOOKS_CACHE",
+            key = "'page_' + #pageable.pageNumber + '_size_' + #pageable.pageSize + "
+                    + "'_sort_' + #pageable.sort.toString() + "
+                    + "'_letter_' + (#letter != null ? #letter : 'all')"
+    )
+    public PagedResponseDto<BookItemDto> getAllBooks(Pageable pageable, String letter) {
         Page<Book> books;
         if (letter != null && !letter.isEmpty()) {
             books = booksRepository.findByTitleStartingWithIgnoreCase(letter, pageable);
         } else {
             books = booksRepository.findAll(pageable);
         }
-        return books.map(BooksConverter::convertBookToBookItemDto);
+        return PageConverter.convertPageToPagedResponseDto(books.map(BooksConverter::convertBookToBookItemDto));
     }
 
-    // cache
     @Override
-    @Cacheable(value = "TOP_BOOKS_CACHE")
-    public List<BookItemDto> getTopBooks(int limit) {
+    @Cacheable(value = "TOP_BOOKS_CACHE", key = "'top'")
+    public BookItemListDto getTopBooks(int limit) {
         Pageable pageable = PageRequest.of(0, limit);
         List<TopBookProjection> topBooks = userBooksRepository.findTopBooks(pageable);
-        return topBooks.stream()
+
+        List<BookItemDto> bookItems = topBooks.stream()
                 .map(proj -> BooksConverter.convertBookToBookItemDto(proj.getBook()))
                 .toList();
+
+        BookItemListDto bookItemListDto = new BookItemListDto();
+        bookItemListDto.setBooks(bookItems);
+        bookItemListDto.setLimit(limit);
+
+        return bookItemListDto;
     }
 
     @Override
@@ -67,7 +80,6 @@ public class PublicBooksService implements IPublicBooksService{
                 .toList();
     }
 
-    // cache
     @Override
     @Cacheable(value = "BOOK_CACHE", key = "#id")
     public BookSingleItemDto getBookById(Long id) {

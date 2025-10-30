@@ -2,6 +2,7 @@ package com.books.services.books.users;
 
 import com.books.dto.MyBookItemDto;
 import com.books.dto.MyBookSingleItemDto;
+import com.books.dto.PagedResponseDto;
 import com.books.utils.enums.BookStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 public interface IUsersBooksService {
 
-    Page<MyBookItemDto> getUserBooks(Long userId, Pageable pageable, BookStatus bookStatus);
+    PagedResponseDto<MyBookItemDto> getUserBooks(Long userId, Pageable pageable, BookStatus bookStatus);
 
     Optional<BookStatus> getBookStatusInUserLibrary(Long userId, Long bookId);
 
