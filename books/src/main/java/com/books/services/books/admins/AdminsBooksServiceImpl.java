@@ -26,19 +26,19 @@ import java.util.UUID;
 public class AdminsBooksServiceImpl implements AdminsBooksService {
 
     private final BooksRepository booksRepository;
-    private final StorageService gcsService;
+    private final StorageService storageService;
     private final VectorStoreService<Book> vectorService;
     private final CacheUpdateService<BookItemDto> cacheUpdateService;
 
     @Autowired
     public AdminsBooksServiceImpl(
             BooksRepository booksRepository,
-            StorageService gcsService,
+            StorageService storageService,
             VectorStoreService<Book> vectorService,
             CacheUpdateService<BookItemDto> cacheUpdateService
     ) {
         this.booksRepository = booksRepository;
-        this.gcsService = gcsService;
+        this.storageService = storageService;
         this.vectorService = vectorService;
         this.cacheUpdateService = cacheUpdateService;
     }
@@ -47,7 +47,7 @@ public class AdminsBooksServiceImpl implements AdminsBooksService {
     @CachePut(value = "BOOK_CACHE", key = "#result.getId()")
     @CacheEvict(value = "ALL_BOOKS_CACHE", allEntries = true)
     public BookSingleItemDto createBook(CreateBookDto createBookDto, MultipartFile file) throws IOException {
-        String fileUrl = gcsService.uploadFile(file, UUID.randomUUID() + "-" + file.getOriginalFilename());
+        String fileUrl = storageService.uploadFile(file, UUID.randomUUID() + "-" + file.getOriginalFilename());
         createBookDto.setCoverLink(fileUrl);
         Book book = BooksConverter.convertCreateBookDtoToBook(createBookDto);
         Book savedBook = booksRepository.save(book);
@@ -63,8 +63,8 @@ public class AdminsBooksServiceImpl implements AdminsBooksService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found with id " + id));
 
         if (newFile != null && !newFile.isEmpty()) {
-            gcsService.deleteFile(book.getCoverLink());
-            String newFileUrl = gcsService.uploadFile(newFile, UUID.randomUUID() + "-" + newFile.getOriginalFilename());
+            storageService.deleteFile(book.getCoverLink());
+            String newFileUrl = storageService.uploadFile(newFile, UUID.randomUUID() + "-" + newFile.getOriginalFilename());
             updateBookDto.setCoverLink(newFileUrl);
         } else {
             updateBookDto.setCoverLink(book.getCoverLink());
@@ -90,7 +90,7 @@ public class AdminsBooksServiceImpl implements AdminsBooksService {
         Book book = booksRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found with id " + id));
 
-        gcsService.deleteFile(book.getCoverLink());
+        storageService.deleteFile(book.getCoverLink());
         vectorService.deleteFromVectorStore(book.getId());
         booksRepository.delete(book);
         cacheUpdateService.evictIfContains("TOP_BOOKS_CACHE", "top", id);
