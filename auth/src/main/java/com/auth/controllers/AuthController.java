@@ -2,7 +2,7 @@ package com.auth.controllers;
 
 import com.auth.dto.RegisterUserDto;
 import com.auth.dto.UserInfoDto;
-import com.auth.services.register.IRegisterUserService;
+import com.auth.services.register.RegisterUserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final IRegisterUserService registerUserService;
+    private final RegisterUserService registerUserService;
 
     @Autowired
-    public AuthController(IRegisterUserService registerUserService) {
+    public AuthController(RegisterUserService registerUserService) {
         this.registerUserService = registerUserService;
     }
 

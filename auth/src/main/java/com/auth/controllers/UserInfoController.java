@@ -3,7 +3,7 @@ package com.auth.controllers;
 import com.auth.dto.UpdateAvatarDto;
 import com.auth.dto.UpdateUsernameDto;
 import com.auth.dto.UserInfoDto;
-import com.auth.services.userinfo.IUserServiceInfo;
+import com.auth.services.userinfo.UserInfoService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/userinfo")
 public class UserInfoController {
 
-    private final IUserServiceInfo userServiceInfo;
+    private final UserInfoService userServiceInfo;
 
-    public UserInfoController(IUserServiceInfo userServiceInfo) {
+    public UserInfoController(UserInfoService userServiceInfo) {
         this.userServiceInfo = userServiceInfo;
     }
 
