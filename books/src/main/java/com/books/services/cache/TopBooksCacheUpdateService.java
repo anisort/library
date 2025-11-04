@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class TopBooksCacheUpdateService implements ICacheUpdateService<BookItemDto> {
+public class TopBooksCacheUpdateService implements CacheUpdateService<BookItemDto> {
 
     private final CacheManager cacheManager;
 

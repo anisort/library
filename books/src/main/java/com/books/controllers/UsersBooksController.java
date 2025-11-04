@@ -4,7 +4,7 @@ import com.books.dto.AddBookStatusDto;
 import com.books.dto.MyBookItemDto;
 import com.books.dto.MyBookSingleItemDto;
 import com.books.dto.PagedResponseDto;
-import com.books.services.books.users.IUsersBooksService;
+import com.books.services.books.users.UsersBooksService;
 import com.books.utils.enums.BookStatus;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ import java.util.Optional;
 @RequestMapping("/api/user/books")
 public class UsersBooksController {
 
-    private final IUsersBooksService usersBooksService;
+    private final UsersBooksService usersBooksService;
 
     @Autowired
-    public UsersBooksController(IUsersBooksService usersBooksService) {
+    public UsersBooksController(UsersBooksService usersBooksService) {
         this.usersBooksService = usersBooksService;
     }
 

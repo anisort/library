@@ -2,7 +2,7 @@ package com.books.utils.seeder.services;
 
 import com.books.entities.Book;
 import com.books.repositories.BooksRepository;
-import com.books.services.embeddings.IVectorStoreService;
+import com.books.services.embeddings.VectorStoreService;
 import com.books.utils.seeder.dto.GutenBookDto;
 import com.books.utils.seeder.dto.GutendexResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +18,17 @@ import java.util.List;
 
 
 @Service
-public class BooksImportService implements IBookImportService{
+public class BooksImportServiceImpl implements BookImportService {
 
     @Value("${api.seeding.url}")
     private String seedingUrl;
 
     private final RestTemplate restTemplate;
     private final BooksRepository booksRepository;
-    private final IVectorStoreService<Book> vectorService;
+    private final VectorStoreService<Book> vectorService;
 
     @Autowired
-    public BooksImportService(RestTemplate restTemplate, BooksRepository booksRepository, IVectorStoreService<Book> vectorService) {
+    public BooksImportServiceImpl(RestTemplate restTemplate, BooksRepository booksRepository, VectorStoreService<Book> vectorService) {
         this.restTemplate = restTemplate;
         this.booksRepository = booksRepository;
         this.vectorService = vectorService;

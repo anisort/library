@@ -7,7 +7,7 @@ import com.books.entities.Book;
 import com.books.repositories.BooksRepository;
 import com.books.repositories.UserBooksRepository;
 import com.books.repositories.projections.TopBookProjection;
-import com.books.services.books.all.PublicBooksService;
+import com.books.services.books.all.PublicBooksServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,7 +43,7 @@ public class PublicBooksServiceTest {
     UserBooksRepository userBooksRepository;
 
     @InjectMocks
-    PublicBooksService publicBooksService;
+    PublicBooksServiceImpl publicBooksService;
 
     @Test
     void getAllBooksWithoutLetter() {

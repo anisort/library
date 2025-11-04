@@ -8,7 +8,7 @@ import com.books.entities.Book;
 import com.books.entities.UserBook;
 import com.books.repositories.BooksRepository;
 import com.books.repositories.UserBooksRepository;
-import com.books.services.books.users.UsersBooksService;
+import com.books.services.books.users.UsersBooksServiceImpl;
 import com.books.utils.enums.BookStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,7 +39,7 @@ public class UsersBooksServiceTest {
     UserBooksRepository userBooksRepository;
 
     @InjectMocks
-    UsersBooksService userBooksService;
+    UsersBooksServiceImpl userBooksService;
 
     @Test
     void getUserBooksWithoutStatus() {

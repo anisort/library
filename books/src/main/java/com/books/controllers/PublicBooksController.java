@@ -4,7 +4,7 @@ import com.books.dto.BookItemDto;
 import com.books.dto.BookItemListDto;
 import com.books.dto.BookSingleItemDto;
 import com.books.dto.PagedResponseDto;
-import com.books.services.books.all.IPublicBooksService;
+import com.books.services.books.all.PublicBooksService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +14,9 @@ import java.util.List;
 @RequestMapping("/api/public/books")
 public class PublicBooksController {
 
-    private final IPublicBooksService publicBooksService;
+    private final PublicBooksService publicBooksService;
 
-    public PublicBooksController(IPublicBooksService publicBooksService) {
+    public PublicBooksController(PublicBooksService publicBooksService) {
         this.publicBooksService = publicBooksService;
     }
 

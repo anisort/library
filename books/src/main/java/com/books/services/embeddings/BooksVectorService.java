@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
-public class BooksVectorService implements IVectorStoreService<Book> {
+public class BooksVectorService implements VectorStoreService<Book> {
 
     private final VectorStore vectorStore;
 

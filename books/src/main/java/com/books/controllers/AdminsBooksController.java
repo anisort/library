@@ -2,7 +2,7 @@ package com.books.controllers;
 
 import com.books.dto.BookSingleItemDto;
 import com.books.dto.CreateBookDto;
-import com.books.services.books.admins.IAdminsBooksService;
+import com.books.services.books.admins.AdminsBooksService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,10 +15,10 @@ import java.io.IOException;
 @RequestMapping("/api/admin/books")
 public class AdminsBooksController {
 
-    private final IAdminsBooksService adminsBooksService;
+    private final AdminsBooksService adminsBooksService;
 
     @Autowired
-    public AdminsBooksController(IAdminsBooksService adminsBooksService) {
+    public AdminsBooksController(AdminsBooksService adminsBooksService) {
         this.adminsBooksService = adminsBooksService;
     }
 

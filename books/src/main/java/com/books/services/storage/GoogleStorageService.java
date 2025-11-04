@@ -11,13 +11,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Service
-public class GcsService implements ICloudService {
+public class GoogleStorageService implements StorageService {
 
     private final Storage storage;
     private final String bucketName;
 
     @Autowired
-    public GcsService(Storage storage, @Value("${gcp.bucket.name}") String bucketName) {
+    public GoogleStorageService(Storage storage, @Value("${gcp.bucket.name}") String bucketName) {
         this.storage = storage;
         this.bucketName = bucketName;
     }

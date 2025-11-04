@@ -1,18 +1,18 @@
 package com.books.utils.seeder.components;
 
 import com.books.repositories.BooksRepository;
-import com.books.utils.seeder.services.BooksImportService;
-import com.books.utils.seeder.services.IBookImportService;
+import com.books.utils.seeder.services.BooksImportServiceImpl;
+import com.books.utils.seeder.services.BookImportService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StartupRunner implements CommandLineRunner {
 
-    private final IBookImportService booksImportService;
+    private final BookImportService booksImportService;
     private final BooksRepository booksRepository;
 
-    public StartupRunner(BooksImportService booksImportService, BooksRepository booksRepository) {
+    public StartupRunner(BookImportService booksImportService, BooksRepository booksRepository) {
         this.booksImportService = booksImportService;
         this.booksRepository = booksRepository;
     }
