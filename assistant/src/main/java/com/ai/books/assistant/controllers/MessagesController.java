@@ -1,7 +1,6 @@
 package com.ai.books.assistant.controllers;
 
 import com.ai.books.assistant.dto.MessageDto;
-import com.ai.books.assistant.services.messages.IMessagesService;
 import com.ai.books.assistant.services.messages.MessagesService;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 @RequestMapping("/api/messages")
 public class MessagesController {
 
-    private final IMessagesService messagesService;
+    private final MessagesService messagesService;
 
     public MessagesController(MessagesService messagesService) {
         this.messagesService = messagesService;

@@ -1,6 +1,6 @@
 package com.ai.books.assistant.services.assistant.gemini;
 
-import com.ai.books.assistant.services.assistant.IAssistantService;
+import com.ai.books.assistant.services.assistant.AssistantService;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
@@ -18,7 +18,7 @@ import java.util.Objects;
 
 
 @Service
-public class GeminiAssistantService implements IAssistantService {
+public class GeminiAssistantService implements AssistantService {
 
     private final VertexAiGeminiChatModel chatModel;
     private final VectorStore vectorStore;

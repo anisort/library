@@ -4,7 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-public interface ICloudService {
+public interface StorageService {
     String uploadFile(MultipartFile file, String objectName) throws IOException;
     void deleteFile(String fileUrl);
 }

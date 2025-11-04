@@ -2,7 +2,6 @@ package com.ai.books.assistant.controllers;
 
 import com.ai.books.assistant.dto.ChatDto;
 import com.ai.books.assistant.services.chat.ChatsService;
-import com.ai.books.assistant.services.chat.IChatsService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,7 @@ import java.util.Map;
 @RequestMapping("/api/chats")
 public class ChatsController {
 
-    private final IChatsService chatsService;
+    private final ChatsService chatsService;
 
     public ChatsController(ChatsService chatsService) {
         this.chatsService = chatsService;

@@ -1,6 +1,6 @@
 package com.ai.books.assistant.services.storage.gcp;
 
-import com.ai.books.assistant.services.storage.ICloudService;
+import com.ai.books.assistant.services.storage.StorageService;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
@@ -12,13 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Service
-public class GcsService implements ICloudService {
+public class GoogleStorageService implements StorageService {
 
     private final Storage storage;
     private final String bucketName;
 
     @Autowired
-    public GcsService(Storage storage, @Value("${gcp.bucket.name}") String bucketName) {
+    public GoogleStorageService(Storage storage, @Value("${gcp.bucket.name}") String bucketName) {
         this.storage = storage;
         this.bucketName = bucketName;
     }
